@@ -1,0 +1,100 @@
+  /* Basic Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Centering the content */
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Container for the game */
+  .container {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Title */
+  h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333333;
+  }
+
+  /* Hints */
+  #hints p {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: #666666;
+  }
+
+  /* Text input */
+  input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    position: relative;
+  }
+
+  /* Custom dropdown */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    width: calc(80% - 22px); /* Match input width */
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 5px;
+    left: 10%;
+  }
+
+  .dropdown-content div {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .dropdown-content div:hover {
+    background-color: #007bff;
+    color: #ffffff;
+  }
+
+  /* Submit button */
+  button {
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  /* Result message */
+  #result {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #333333;
+  }

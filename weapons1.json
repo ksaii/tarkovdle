@@ -1,0 +1,995 @@
+[
+    {
+      "name": "VSK-94",
+      "type": "Marksman Rifle",
+      "ammo_type": "9x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SVT-40",
+      "type": "Semi-Automatic Rifle",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "VPO-209",
+      "type": "Carbine",
+      "ammo_type": ".366 TKM",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "VPO-136",
+      "type": "Carbine",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "OP-SKS",
+      "type": "Carbine",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "TX-15 DML",
+      "type": "Civilian Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "RFB",
+      "type": "Bullpup Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AVT-40",
+      "type": "Semi-Automatic Rifle",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SAG AK",
+      "type": "Carbine",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "ADAR 2-15",
+      "type": "Carbine",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "9A-91",
+      "type": "Assault Rifle",
+      "ammo_type": "9x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SKS",
+      "type": "Carbine",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SAG AK Short",
+      "type": "Carbine",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "VPO-101",
+      "type": "Carbine",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-12",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "2-round Burst", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-74",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-74M",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-74N",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-101",
+      "type": "Assault Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-102",
+      "type": "Assault Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-103",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-104",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-105",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AKM",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AKMN",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AKMS",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AKMSN",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AKS-74",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AKS-74N",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AKS-74U",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AKS-74UB",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AKS-74UN",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AS VAL",
+      "type": "Assault Rifle",
+      "ammo_type": "9x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "ASh-12",
+      "type": "Assault Rifle",
+      "ammo_type": "12.7x55mm STs-130",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AUG A1",
+      "type": "Assault Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AUG A3",
+      "type": "Assault Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "DT MDR 5.56x45",
+      "type": "Assault Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "DT MDR 7.62x51",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "G36",
+      "type": "Assault Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single", "2-round Burst", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "HK 416A5",
+      "type": "Assault Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M4A1",
+      "type": "Assault Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MCX",
+      "type": "Assault Rifle",
+      "ammo_type": ".300 Blackout",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MCX SPEAR",
+      "type": "Assault Rifle",
+      "ammo_type": "6.8x51mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Mk47",
+      "type": "Carbine",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "RD-704",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SA-58",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SCAR-H",
+      "type": "Assault Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SCAR-L",
+      "type": "Assault Rifle",
+      "ammo_type": "5.56x45mm NATO",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AXMC",
+      "type": "Bolt-Action Rifle",
+      "ammo_type": ".338 Lapua Magnum",
+      "firing_modes": ["Single (Bolt Action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "DVL-10",
+      "type": "Bolt-Action Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single (Bolt Action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M700",
+      "type": "Bolt-Action Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single (Bolt Action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Mosin Infantry",
+      "type": "Bolt-Action Rifle",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Single (Bolt Action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Mosin Sniper",
+      "type": "Bolt-Action Rifle",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Single (Bolt Action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SV-98",
+      "type": "Bolt-Action Rifle",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Single (Bolt Action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "T-5000",
+      "type": "Bolt-Action Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single (Bolt Action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "VPO-215",
+      "type": "Bolt-Action Rifle",
+      "ammo_type": ".366 TKM",
+      "firing_modes": ["Single (Bolt Action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "G28",
+      "type": "Designated Marksman Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M1A",
+      "type": "Designated Marksman Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Mk-18",
+      "type": "Designated Marksman Rifle",
+      "ammo_type": ".338 Lapua Magnum",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "RSASS",
+      "type": "Designated Marksman Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SR-25",
+      "type": "Designated Marksman Rifle",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SVDS",
+      "type": "Designated Marksman Rifle",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "VSS Vintorez",
+      "type": "Designated Marksman Rifle",
+      "ammo_type": "9x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "FN40GL",
+      "type": "Grenade Launcher",
+      "ammo_type": "40x46mm",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M32A1",
+      "type": "Grenade Launcher",
+      "ammo_type": "40x46mm",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PKM",
+      "type": "Light Machine Gun",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PKP",
+      "type": "Light Machine Gun",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "RPD",
+      "type": "Light Machine Gun",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "RPDN",
+      "type": "Light Machine Gun",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "RPK-16",
+      "type": "Light Machine Gun",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "KS-23M",
+      "type": "Shotgun",
+      "ammo_type": "23x75mm",
+      "firing_modes": ["Single (Pump action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M3 Super 90",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single (Pump action)", "Semi Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M590A1",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single (Pump action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M870",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single (Pump action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP-18",
+      "type": "Shotgun",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP-43-1C",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single", "Double"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP-133",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single (Pump action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP-153",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP-155",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MTs-255-12",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single action", "Double action"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Saiga-12K",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "TOZ-106",
+      "type": "Shotgun",
+      "ammo_type": "20/70",
+      "firing_modes": ["Single (Bolt action)"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP5",
+      "type": "Submachine Gun",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single", "3-round Burst", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP5K-N",
+      "type": "Submachine Gun",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single", "3-round Burst", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP7A1",
+      "type": "Submachine Gun",
+      "ammo_type": "4.6x30mm HK",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP7A2",
+      "type": "Submachine Gun",
+      "ammo_type": "4.6x30mm HK",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP9",
+      "type": "Submachine Gun",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP9-N",
+      "type": "Submachine Gun",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MPX",
+      "type": "Submachine Gun",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "P90",
+      "type": "Submachine Gun",
+      "ammo_type": "5.7x28mm FN",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PP-9 \"Klin\"",
+      "type": "Submachine Gun",
+      "ammo_type": "9x18mm Makarov",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PP-19-01 Vityaz-SN",
+      "type": "Submachine Gun",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PP-91 \"Kedr\"",
+      "type": "Submachine Gun",
+      "ammo_type": "9x18mm Makarov",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PP-91-01 \"Kedr-B\"",
+      "type": "Submachine Gun",
+      "ammo_type": "9x18mm Makarov",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PPSh-41",
+      "type": "Submachine Gun",
+      "ammo_type": "7.62x25mm Tokarev",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Saiga-9",
+      "type": "Carbine",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SR-2M",
+      "type": "Submachine Gun",
+      "ammo_type": "9x21mm Gyurza",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "STM-9",
+      "type": "Pistol-Caliber Carbine",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "UMP 45",
+      "type": "Submachine Gun",
+      "ammo_type": ".45 ACP",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Vector .45",
+      "type": "Submachine Gun",
+      "ammo_type": ".45 ACP",
+      "firing_modes": ["Single", "2-round Burst", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Vector 9x19",
+      "type": "Submachine Gun",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single", "2-round Burst", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "APB",
+      "type": "Pistol",
+      "ammo_type": "9x18mm Makarov",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "APS",
+      "type": "Pistol",
+      "ammo_type": "9x18mm Makarov",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "FN 5-7",
+      "type": "Pistol",
+      "ammo_type": "5.7x28mm FN",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Glock 17",
+      "type": "Pistol",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Glock 18C",
+      "type": "Pistol",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "Glock 19X",
+      "type": "Pistol",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M9A3",
+      "type": "Pistol",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M45A1",
+      "type": "Pistol",
+      "ammo_type": ".45 ACP",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "M1911A1",
+      "type": "Pistol",
+      "ammo_type": ".45 ACP",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP-443 \"Grach\"",
+      "type": "Pistol",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "P226R",
+      "type": "Pistol",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PB pistol",
+      "type": "Pistol",
+      "ammo_type": "9x18mm Makarov",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PL-15",
+      "type": "Pistol",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PM (t) pistol",
+      "type": "Pistol",
+      "ammo_type": "9x18mm Makarov",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "PM pistol",
+      "type": "Pistol",
+      "ammo_type": "9x18mm Makarov",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "SR-1MP Gyurza",
+      "type": "Pistol",
+      "ammo_type": "9x21mm Gyurza",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "TT pistol",
+      "type": "Pistol",
+      "ammo_type": "7.62x25mm Tokarev",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "TT pistol (gold)",
+      "type": "Pistol",
+      "ammo_type": "7.62x25mm Tokarev",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "USP .45",
+      "type": "Pistol",
+      "ammo_type": ".45 ACP",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "CR 50DS",
+      "type": "Revolver",
+      "ammo_type": ".357 Magnum",
+      "firing_modes": ["Single action", "Double action"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "CR 200DS",
+      "type": "Revolver",
+      "ammo_type": "9x19mm Parabellum",
+      "firing_modes": ["Single action", "Double action"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "RSh-12",
+      "type": "Revolver",
+      "ammo_type": "12.7x55mm STs-130",
+      "firing_modes": ["Single action", "Double action"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "MP-43 sawed-off",
+      "type": "Shotgun",
+      "ammo_type": "12/70",
+      "firing_modes": ["Single", "Double"],
+      "price_range": "",
+      "barter_level": ""
+    }
+  ] 
+  

@@ -1,0 +1,18 @@
+[
+    {
+      "name": "VSK-94",
+      "type": "Marksman Rifle",
+      "ammo_type": "9x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "11",
+      "barter_level": "11"
+    },
+    {
+      "name": "SVT-40",
+      "type": "Semi-Automatic Rifle",
+      "ammo_type": "7.62x54mmR",
+      "firing_modes": ["Single"],
+      "price_range": "1",
+      "barter_level": "1"
+    }
+]
