@@ -7,16 +7,69 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Tarkovdle: Guess the Weapon</h1>
-    <div id="hints"></div>
-    <div class="dropdown">
-      <input type="text" id="guessInput" placeholder="Enter your guess" autocomplete="off">
-      <div id="dropdown-content" class="dropdown-content"></div>
+  <main>
+    <div class="header-container">
+      <h1 id = "title">Tarkovdle</h1>
+      <button id="reset">Reset  Local</button>
+      
     </div>
-    <button id="submitGuess">Submit Guess</button>
+
+
+  <div class="container">
+
+
+
+    <div id="hintOne">
+      <button id = "showOne"> Reveal Audio Hint</button>
+      <div id= "audioHint">
+        <audio id = audioIn controls>
+          <source src="path/to/your/audiofile.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      <button id = "audioListenButton">Listen to Weapon</button>
+      </div>
+    </div>
+
+
+
+    <div class="autocomplete-container">
+
+      <div class="input-button-wrapper">
+
+      <input placeholder="Type Gun Name..." type="text" id="searchBox" autocomplete="off" onkeyup="filterList()">
+      <button id="submitGuess">Submit Guess</button>
+    </div> 
+
+
+      <ul id="weaponList" class="weapon-list"></ul>
+    </div>
+        
     <p id="result"></p>
-  </div>
+    <p id="popup"></p>
+    </div>
+    
+
+    <div class = "hintsContainer">
+      <div class="hintDetailContainer">
+          <div>Weapon</div>
+          <div>Ammo Type</div>
+          <div>Price Range</div>
+          <div>Weapon Type</div>
+          <div>Firing Modes</div>
+      </div>
+
+    <ul id="hintList" class="hints-list"></ul>
+    </div>
+
+    <div class = "winContainer" id="winHolder">
+      <div id="countdown"></div>
+      <div id="winnerCount"></div>
+    </div>
+
+
+</main>
+  
   <script src="script.js"></script>
 </body>
 </html>
+

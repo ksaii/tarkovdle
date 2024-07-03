@@ -5,7 +5,9 @@
       "ammo_type": "9x39mm",
       "firing_modes": ["Single", "Full-Auto"],
       "price_range": "11",
-      "barter_level": "11"
+      "barter_level": "11",
+      "image": "images/weaponimages/1.png",
+      "sound": ""
     },
     {
       "name": "SVT-40",
@@ -13,6 +15,61 @@
       "ammo_type": "7.62x54mmR",
       "firing_modes": ["Single"],
       "price_range": "1",
-      "barter_level": "1"
+      "barter_level": "1",
+      "image": "images/1.png",
+      "sound": ""
+    },
+    {
+      "name": "VPO-209",
+      "type": "Assault Carbine",
+      "ammo_type": ".366 TKM",
+      "firing_modes": ["Single"],
+      "price_range": "1",
+      "barter_level": "1",
+      "image": "images/1.png",
+      "sound": ""
+
+    },
+    {
+      "name": "SKS",
+      "type": "Carbine",
+      "ammo_type": "7.62x39mm",
+      "firing_modes": ["Single"],
+      "price_range": "100,000₽",
+      "barter_level": "",
+      "image": "images/1.png",
+      "sound": "tarkovgunsounds/sks.mp3"
+    },
+    {
+      "name": "SAG AK SHORT",
+      "type": "Carbine",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "VPO-101",
+      "type": "Carbine",
+      "ammo_type": "7.62x51mm NATO",
+      "firing_modes": ["Single"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-12",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "2-round Burst", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
+    },
+    {
+      "name": "AK-74",
+      "type": "Assault Rifle",
+      "ammo_type": "5.45x39mm",
+      "firing_modes": ["Single", "Full-Auto"],
+      "price_range": "",
+      "barter_level": ""
     }
 ]

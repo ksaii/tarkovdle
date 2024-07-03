@@ -1,0 +1,6 @@
+1.Finish and smooth out the post guess hints
+
+2. Add in a simple audio guess after a certain amount of guesses 
+
+3. Smooth out the html css visuals ie. (move submit button, fix colors, align all items, add custom font)
+

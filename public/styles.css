@@ -1,100 +1,334 @@
-  /* Basic Reset */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+/* Fonts */
+@font-face {
+  font-family: 'DIN Pro';
+  src: url('fonts/D-DIN-PRO-400-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
 
-  /* Centering the content */
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
-    font-family: Arial, sans-serif;
-  }
+@font-face {
+  font-family: 'DIN Pro';
+  src: url('fonts/D-DIN-PRO-500-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
 
-  /* Container for the game */
-  .container {
-    text-align: center;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+/* Global Styles */
+* {
+  box-sizing: border-box;
 
-  /* Title */
-  h1 {
-    margin-bottom: 20px;
-    font-size: 2rem;
-    color: #333333;
-  }
+}
 
-  /* Hints */
-  #hints p {
-    margin: 10px 0;
-    font-size: 1.2rem;
-    color: #666666;
-  }
 
-  /* Text input */
-  input[type="text"] {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    position: relative;
-  }
 
-  /* Custom dropdown */
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 1;
-    width: calc(80% - 22px); /* Match input width */
-    max-height: 200px;
-    overflow-y: auto;
-    margin-top: 5px;
-    left: 10%;
-  }
+body, html {
+  font-family: 'DIN Pro', sans-serif;
+  background-color: #000;
+  color: #fff;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  background-image: url('images/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  scroll-behavior: smooth;
+}
 
-  .dropdown-content div {
-    padding: 10px;
-    cursor: pointer;
-  }
+/* Container */
+.container {
+  text-align: center;
+  margin-top: 100px;
+}
 
-  .dropdown-content div:hover {
-    background-color: #007bff;
-    color: #ffffff;
-  }
+/* Header Container */
+.header-container {
+  position: relative;
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
 
-  /* Submit button */
-  button {
-    padding: 10px 20px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #ffffff;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+/* Title */
+#title {
+  font-family: 'Arial Black', sans-serif;
+  font-weight: 900;
+  color: #9a8866;
+  margin-top: 20px;
+  font-size: 70px;
+  border: 5px solid #9a8866;
+  padding: 10px 20px;
+  display: inline-block;
+  background-color: #2c2c2c;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
 
-  button:hover {
-    background-color: #0056b3;
-  }
+/* Autocomplete Container */
+.autocomplete-container {
+  position: relative;
+  width: 300px;
+  margin: 0 auto;
+}
 
-  /* Result message */
-  #result {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    color: #333333;
-  }
+/* Hint One */
+#hintOne {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+/* Show One */
+#showOne {
+  display: none;
+  margin-bottom: 10px;
+}
+
+/* Audio Hint */
+#audioHint {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Audio Input */
+#audioIn {
+  display: flex;
+  align-items: center;
+  color: #9a8866;
+}
+
+/* Audio Listen Button */
+#audioListenButton {
+  display: flex;
+  align-items: center;
+}
+
+/* Input Button Wrapper */
+.input-button-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Submit Guess */
+#submitGuess {
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 0 4px 4px 0;
+  background-color: #2a2a2a;
+  color: #9a8866;
+  cursor: pointer;
+  margin-left: 10px;
+  font-family: 'DIN Pro', sans-serif;
+}
+
+/* Search Box */
+#searchBox {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #2a2a2a;
+  color: #fff;
+  z-index: 1000;
+  font-family: 'DIN Pro', sans-serif;
+  font-weight: 500;
+}
+
+/* Weapon List */
+.weapon-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #444;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #2a2a2a;
+  width: 100%;
+  z-index: 1000;
+  display: none;
+}
+
+/* Custom Scrollbar for Weapon List */
+.weapon-list::-webkit-scrollbar {
+  width: 12px;
+}
+
+.weapon-list::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 10px;
+}
+
+.weapon-list::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 10px;
+  border: 2px solid #2a2a2a;
+}
+
+.weapon-list li {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #444;
+}
+
+.weapon-list li img {
+  margin-right: 10px;
+  max-width: 100px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
+}
+
+.weapon-list li:hover {
+  background-color: #3a3a3a;
+  cursor: pointer;
+}
+
+/* Hints Container */
+.hintsContainer {
+  text-align: center;
+  margin-top: 150px;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Hint Detail Container */
+.hintDetailContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid black;
+  background-color: #444;
+  font-family: 'DIN Pro', sans-serif;
+  font-weight: 500;
+  box-sizing: border-box;
+  max-width: 600px;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.hintDetailContainer div {
+  flex: 1;
+  margin: 0 5px;
+  padding: 5px;
+  background-color: #2a2a2a;
+  color: white;
+  text-align: center;
+  border: 1px solid black;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.hintDetailContainer.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hintDetailContainer div:first-child {
+  margin-left: 0;
+}
+
+.hintDetailContainer div:last-child {
+  margin-right: 0;
+}
+
+/* Hints List */
+.hints-list {
+  z-index: 2000;
+  margin-top: 50px;
+  padding: 0;
+  margin: 20px 0 0 0;
+  border: 0px solid #ccc;
+  max-height: 100000px;
+  overflow-y: auto;
+  align-items: center;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.hints-list li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  border: 2px solid black;
+  padding: 5px;
+  background-color: #2a2a2a;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  flex: 1 1 0;
+  min-width: 600px;
+  max-width: 600px;
+  min-height: 90px;
+  max-height: 90px;
+}
+
+.hints-list li.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hints-list li div {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid black;
+  font-family: 'DIN Pro', sans-serif;
+  font-weight: 500;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 60px;
+  min-width: 60px;
+}
+
+.hints-list li div span {
+  flex: 1;
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1em;
+}
+
+.hints-list li img {
+  margin-right: 5px;
+  max-width: 100px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
+}
+
+
+.winContainer {
+  align-items: center;
+  margin-top: 250px;
+  padding-bottom: 150px;
+ 
+}
+
+#countdown {
+  text-align: center;
+
+}
