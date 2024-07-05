@@ -264,18 +264,20 @@ body, html {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 10px;
-  border: 2px solid black;
+  margin-bottom: 0px;
+  border: 2px solid transparent;
   padding: 5px;
-  background-color: #2a2a2a;
+  background-color: transparent;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
   flex: 1 1 0;
-  min-width: 600px;
-  max-width: 600px;
-  min-height: 90px;
-  max-height: 90px;
+  min-width: 1200px;
+  max-width: 1200px;
+  min-height: 140px;
+  max-height: 140px;
+  background-image: url("images/3TallGrid.PNG");
+  background-size: 40%;
 }
 
 .hints-list li.visible {
@@ -286,9 +288,16 @@ body, html {
 .hints-list li div {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.hints-list li div div {
+  display: flex;
+  flex-direction: row;
   margin: 5px;
   padding: 5px;
-  border: 1px solid black;
+  border: 1px transparent;
   font-family: 'DIN Pro', sans-serif;
   font-weight: 500;
   justify-content: center;
@@ -301,9 +310,20 @@ body, html {
   box-sizing: border-box;
   min-height: 60px;
   min-width: 60px;
+
 }
 
-.hints-list li div span {
+.hints-list li div div div{
+  border: 2px solid black;
+  min-width: 143px;
+  max-width: 143px;
+  min-height: 97px;
+  max-height: 97px;
+  display: flex;
+
+}
+
+.hints-list li div div span {
   flex: 1;
   margin-left: 10px;
   white-space: nowrap;
@@ -312,9 +332,14 @@ body, html {
   font-size: 1em;
 }
 
-.hints-list li img {
+.hints-list li div img {
+  margin: 5px;
+  padding: 5px;
+  border: 5px solid black;
   margin-right: 5px;
-  max-width: 100px;
+  min-height: 60px;
+  min-width: px;
+  max-width:350px;
   max-height: 100px;
   width: auto;
   height: auto;

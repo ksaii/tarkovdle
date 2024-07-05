@@ -11,7 +11,7 @@ app.use(express.static('../public'));
 const weapons = JSON.parse(fs.readFileSync(path.join(__dirname, '../weapons.json'), 'utf-8'));
 
 // Select a daily weapon (simple example, improve this as needed)
-const dailyWeapon =  weapons[3];   //weapons[Math.floor(Math.random() * weapons.length)];
+const dailyWeapon =  weapons[0];   //weapons[Math.floor(Math.random() * weapons.length)];
 
 // Endpoint to get daily weapon attributes
 app.get('/api/daily-weapon', (req, res) => {
@@ -34,7 +34,7 @@ app.get('/api/validate-guess', (req, res) => {
   const userGuess = req.query.guess.toUpperCase();
   const dailyWeaponName = dailyWeapon.name.toUpperCase(); 
 
-  if (userGuess === dailyWeapon.name) {
+  if (userGuess === dailyWeaponName) {
     const storedGuess = weapons.find(weapon => weapon.name.toUpperCase() === userGuess);
     res.json({ correct: true, message: 'Correct! You guessed the daily weapon.',filteredGuess: storedGuess});
     console.log("Guess",storedGuess);

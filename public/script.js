@@ -58,6 +58,7 @@ function handleSubmit() {
         document.getElementById("result").innerText = data.message;
         firstGuess = false;
         verifiedWeapon = data.filteredGuess;
+        console.log("VArray:", verifiedWeapon);
         compareHints();
         removeWeaponFromDropdown(guess);
         correctPop(data.correct);
@@ -165,13 +166,15 @@ function compareHints() {
 
   const li = document.createElement("li");
   const img = document.createElement("img");
+  const subli = document.createElement("div");
 
   const hintDetailContainer = document.querySelector('.hintDetailContainer');
 
 
   img.src = verifiedWeapon.image;
   img.alt = "Weapon img";
-  li.appendChild(img);
+  subli.appendChild(img);
+  
 
   const details = document.createElement("div");
 
@@ -219,7 +222,19 @@ function compareHints() {
     details.appendChild(type);
   }
 
-  ;
+  if (correctWeapon.fire_rate !== verifiedWeapon.fire_rate) {
+    const frate = document.createElement("div");
+    frate.textContent = `${verifiedWeapon.fire_rate}`;
+    frate.style.backgroundColor = "red";
+    details.appendChild(frate);
+  } else {
+    const frate = document.createElement("div");
+    frate.textContent = `${correctWeapon.fire_rate}`;
+    frate.style.backgroundColor = "green";
+    details.appendChild(frate);
+  }
+
+  
 
   if (!arraysEqual(correctWeapon.firing_modes, verifiedWeapon.firing_modes)) {
     const fmodes = document.createElement("div");
@@ -236,10 +251,16 @@ function compareHints() {
     fmodes.style.backgroundColor = "green";
     details.appendChild(fmodes);
   }
+  console.log("CorWeapon Frate ",correctWeapon.fire_rate);
+  console.log("Vweapon Frate ",verifiedWeapon.fire_rate);
+
+
 
   // Add more comparisons for other details as needed
 
-  li.appendChild(details);
+  subli.appendChild(details);
+
+  li.appendChild(subli);
 
   guessesArray.push({
     imgSrc: verifiedWeapon.image,
@@ -275,9 +296,9 @@ function removeWeaponFromDropdown(weaponName) {
   const li = ul.getElementsByTagName("li");
 
   console.log("Removing ", weaponName, "from Dropdown");
-
+  
   for (let i = 0; i < li.length; i++) {
-    if (li[i].textContent.includes(weaponName)) {
+    if ((li[i].textContent.toUpperCase()).includes(weaponName)) {
       ul.removeChild(li[i]);
       // Remove the weapon from the weapons array
       weapons = weapons.filter(weapon => weapon.name !== weaponName);
@@ -431,15 +452,18 @@ function loadState() {
     const hintList = document.getElementById("hintList");
     hintList.innerHTML = "";
     parsedState.guesses.forEach(guess => {
+      const subli = document.createElement("div");
       const li = document.createElement("li");
       const img = document.createElement("img");
       img.src = guess.imgSrc;
       img.alt = "Weapon img";
-      li.appendChild(img);
+      subli.appendChild(img);
 
       const details = document.createElement("div");
       details.innerHTML = guess.detailsHTML;
-      li.appendChild(details);
+      subli.appendChild(details);
+
+      li.appendChild(subli);
 
       li.classList.add('visible');
       hintList.appendChild(li);
