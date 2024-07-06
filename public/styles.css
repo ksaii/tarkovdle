@@ -288,13 +288,6 @@ body, html {
 .hints-list li div {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.hints-list li div div {
-  display: flex;
-  flex-direction: row;
   margin: 5px;
   padding: 5px;
   border: 1px transparent;
@@ -310,13 +303,17 @@ body, html {
   box-sizing: border-box;
   min-height: 60px;
   min-width: 60px;
+  
+}
 
+.hints-list li div div {
+ 
 }
 
 .hints-list li div div div{
   border: 2px solid black;
-  min-width: 143px;
-  max-width: 143px;
+  min-width: 145px;
+  max-width: 145px;
   min-height: 97px;
   max-height: 97px;
   display: flex;
@@ -336,9 +333,9 @@ body, html {
   margin: 5px;
   padding: 5px;
   border: 5px solid black;
-  margin-right: 5px;
+  margin-right: 75px;
   min-height: 60px;
-  min-width: px;
+  min-width: 350px;
   max-width:350px;
   max-height: 100px;
   width: auto;
