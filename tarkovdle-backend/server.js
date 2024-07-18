@@ -11,7 +11,7 @@ app.use(express.static('../public'));
 const weapons = JSON.parse(fs.readFileSync(path.join(__dirname, '../weapons.json'), 'utf-8'));
 
 // Select a daily weapon (simple example, improve this as needed)
-const dailyWeapon =  weapons[0];   //weapons[Math.floor(Math.random() * weapons.length)];
+const dailyWeapon =  weapons[Math.floor(Math.random() * weapons.length)];
 
 // Endpoint to get daily weapon attributes
 app.get('/api/daily-weapon', (req, res) => {

@@ -1,0 +1,21 @@
+query {
+  
+  itemsByName(name: "pb 9x18") {
+    name
+    weight
+    basePrice
+    width
+    height
+    iconLink
+    gridImageLink
+    sellFor {
+      price
+      source
+    }
+  }
+
+}
+
+
+https://api.tarkov.dev/
+

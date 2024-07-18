@@ -64,10 +64,7 @@ function handleSubmit() {
         correctPop(data.correct);
         clearInput();
         guessCountAdd();
-
-        if (guessCount > 3) {
-          revealHintOne();
-        }
+        revealHints();
 
         // Save game state
         saveState();
@@ -85,6 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
   loadState();
   loadWeapons();
+  blurHints();
+ 
 
   fetch("http://localhost:3000/api/weapon-data")
     .then((response) => response.json())
@@ -169,16 +168,20 @@ function compareHints() {
   const subli = document.createElement("div");
 
   const hintDetailContainer = document.querySelector('.hintDetailContainer');
-
+  const details = document.createElement("div");
 
   img.src = verifiedWeapon.image;
   img.alt = "Weapon img";
-  subli.appendChild(img);
+  details.appendChild(img);
   
 
-  const details = document.createElement("div");
+  
 
   // Compare hints
+
+
+  //weapon ammo_type divs
+
   if (correctWeapon.ammo_type !== verifiedWeapon.ammo_type) {
     const ammoType = document.createElement("div");
     ammoType.textContent = `${verifiedWeapon.ammo_type}`;
@@ -191,26 +194,10 @@ function compareHints() {
     details.appendChild(ammoType);
   }
 
-  if (correctWeapon.price_range !== verifiedWeapon.price_range) {
-    if(correctWeapon.price_range > verifiedWeapon.price_range){
-    const priceRange = document.createElement("div");
-    priceRange.textContent = `${verifiedWeapon.price_range}`;
-    priceRange.style.backgroundColor = "red";
-    details.appendChild(priceRange);
-    }else{
-    const priceRange = document.createElement("div");
-    priceRange.textContent = `${verifiedWeapon.price_range}`;
-    priceRange.style.backgroundColor = "red";
-    details.appendChild(priceRange);
-    }
-  } else {
-    const priceRange = document.createElement("div");
-    priceRange.textContent = `${correctWeapon.price_range}`;
-    priceRange.style.backgroundColor = "green";
-    details.appendChild(priceRange);
-  }
 
-  if (correctWeapon.type !== verifiedWeapon.type) {
+   //weapon type divs
+
+   if (correctWeapon.type !== verifiedWeapon.type) {
     const type = document.createElement("div");
     type.textContent = `${verifiedWeapon.type}`;
     type.style.backgroundColor = "red";
@@ -222,19 +209,91 @@ function compareHints() {
     details.appendChild(type);
   }
 
-  if (correctWeapon.fire_rate !== verifiedWeapon.fire_rate) {
-    const frate = document.createElement("div");
-    frate.textContent = `${verifiedWeapon.fire_rate}`;
-    frate.style.backgroundColor = "red";
-    details.appendChild(frate);
+
+  //weapon price_range divs
+
+  if (correctWeapon.price_range !== verifiedWeapon.price_range) {
+
+    if(correctWeapon.price_range > verifiedWeapon.price_range){
+    const priceRange = document.createElement("div");
+    priceRange.textContent = `${verifiedWeapon.price_range}₽`;
+
+    priceRange.style.backgroundColor = "red";
+    details.appendChild(priceRange);
+    }else{
+    const priceRange = document.createElement("div");
+    priceRange.textContent = `${verifiedWeapon.price_range}₽`;
+
+    priceRange.style.backgroundColor = "red";
+    details.appendChild(priceRange);
+    }
+
   } else {
-    const frate = document.createElement("div");
-    frate.textContent = `${correctWeapon.fire_rate}`;
-    frate.style.backgroundColor = "green";
-    details.appendChild(frate);
+    const priceRange = document.createElement("div");
+    priceRange.textContent = `${correctWeapon.price_range}₽`;
+    priceRange.style.backgroundColor = "green";
+    details.appendChild(priceRange);
   }
 
+
+
+ 
+
+
+  //weapon weight divs
+
+  if (correctWeapon.weight !== verifiedWeapon.weight) {
+
+    if(correctWeapon.weight > verifiedWeapon.weight){
+    const weaponWeight = document.createElement("div");
+    weaponWeight.textContent = `${verifiedWeapon.weight}kg`;
+
+    weaponWeight.style.backgroundColor = "red";
+    details.appendChild(weaponWeight);
+    }else{
+    const weaponWeight = document.createElement("div");
+    weaponWeight.textContent = `${verifiedWeapon.weight}kg`;
+
+    weaponWeight.style.backgroundColor = "red";
+    details.appendChild(weaponWeight);
+    }
+
+  } else {
+    const weaponWeight = document.createElement("div");
+    weaponWeight.textContent = `${correctWeapon.weight}kg`;
+    weaponWeight.style.backgroundColor = "green";
+    details.appendChild(weaponWeight);
+  }
+
+
+    //weapon fire_rate divs
+
+    if (correctWeapon.fire_rate !== verifiedWeapon.fire_rate) {
+
+      if(correctWeapon.fire_rate > verifiedWeapon.fire_rate){
+      const weaponFireRate = document.createElement("div");
+      weaponFireRate.textContent = `${verifiedWeapon.fire_rate}RPM`;
   
+      weaponFireRate.style.backgroundColor = "red";
+      details.appendChild(weaponFireRate);
+      }else{
+      const weaponFireRate = document.createElement("div");
+      weaponFireRate.textContent = `${verifiedWeapon.fire_rate}RPM`;
+  
+      weaponFireRate.style.backgroundColor = "red";
+      details.appendChild(weaponFireRate);
+      }
+
+    } else {
+      const weaponFireRate = document.createElement("div");
+      weaponFireRate.textContent = `${correctWeapon.fire_rate}RPM`;
+      weaponFireRate.style.backgroundColor = "green";
+      details.appendChild(weaponFireRate);
+    }
+
+
+
+  //weapon fire_modes divs
 
   if (!arraysEqual(correctWeapon.firing_modes, verifiedWeapon.firing_modes)) {
     const fmodes = document.createElement("div");
@@ -251,6 +310,12 @@ function compareHints() {
     fmodes.style.backgroundColor = "green";
     details.appendChild(fmodes);
   }
+
+
+
+
+
+
   console.log("CorWeapon Frate ",correctWeapon.fire_rate);
   console.log("Vweapon Frate ",verifiedWeapon.fire_rate);
 
@@ -349,36 +414,120 @@ function clearInput() {
   clearBox.value = "";
 }
 
-document
-  .getElementById("audioListenButton")
-  .addEventListener("click", function () {
+document.getElementById("hintOne").addEventListener("click", function () {
+  if(guessCount > 3-1){
+    console.log("h1 clicked");
+
     const newAudioPath = correctWeapon.sound;
 
     const audioElement = document.getElementById("audioIn");
 
     audioElement.src = newAudioPath;
-    
+
     audioElement.load();
+
+    let audioHint = document.getElementsByClassName("audioHint");
+    let imageHint = document.getElementsByClassName("iconHint");
+
+    if(hintShow[0]===true){
+    imageHint[0].style.display = "none";
+    hintShow[1] = true;
+    audioHint[0].style.display = "flex";
+    hintShow[0] = false;
+    }else{
+    audioHint[0].style.display = "none";
+    hintShow[0] = true;
+  }
+}
   });
 
 function revealHintOne() {
-  let aButton = document.getElementById("showOne");
+  let aButton = document.getElementById("hintOne");
 
-  aButton.style.display = "block";
+  aButton.classList.remove("blur");
+  aButton.classList.add("hover-effect");
 }
 
-  let hintShow = true;
+document.getElementById("hintTwo").addEventListener("click",function() {
+  if(guessCount > 5-1){
+  console.log("h2 clicked");
 
-document.getElementById("showOne").addEventListener("click", function(){
-  let audioHint = document.getElementById("audioHint");
-  if(hintShow===true){
-  audioHint.style.display = "block";
-  hintShow = false;
-  }else{
-    audioHint.style.display = "none";
-    hintShow = true;
+
+  const hintImg = document.getElementById("hintImage");
+
+  console.log(correctWeapon.image);
+
+  hintImg.src = correctWeapon.image;
+
+  let audioHint = document.getElementsByClassName("audioHint");
+  let imageHint = document.getElementsByClassName("iconHint");
+
+
+  if(hintShow[1]===true){
+    audioHint[0].style.display = "none";
+    hintShow[0] = true;
+    
+    imageHint[0].style.display = "flex";
+    hintShow[1] = false;
+    }else{
+    imageHint[0].style.display = "none";
+    hintShow[1] = true;
   }
+}
 })
+
+function revealHintTwo() {
+  let bButton = document.getElementById("hintTwo");
+
+  bButton.classList.remove("blur");
+  bButton.classList.add("hover-effect");
+}
+
+document.getElementById("hintThree").addEventListener("click",function() {
+  if(guessCount > 8-1){
+  console.log("h3 clicked");
+
+
+  const hintImg = document.getElementById("hintImage");
+
+  console.log(correctWeapon.image);
+
+  hintImg.src = correctWeapon.image;
+
+  let audioHint = document.getElementsByClassName("audioHint");
+  let imageHint = document.getElementsByClassName("iconHint");
+   
+
+  if(hintShow[1]===true){
+    audioHint[0].style.display = "none";
+    hintShow[0] = true;
+    
+    imageHint[0].style.display = "flex";
+    hintShow[1] = false;
+    }else{
+    imageHint[0].style.display = "none";
+    hintShow[1] = true;
+  }
+}
+})
+
+function revealHintThree() {
+  let cButton = document.getElementById("hintThree");
+
+  cButton.classList.remove("blur");
+  cButton.classList.add("hover-effect");
+}
+
+
+  
+
+
+
+
+
+
+
+let hintShow = [true,true,true];
 
 let guessCount = 0;
 
@@ -469,9 +618,7 @@ function loadState() {
       hintList.appendChild(li);
     });
 
-    if (guessCount > 3) {
-      revealHintOne();
-    }
+    revealHints();
   }
 }
 
@@ -513,3 +660,53 @@ function arraysEqual(a, b) {
   return true;
 }
 
+
+
+const audio = document.getElementById('audioIn');
+const playButton = document.getElementById('audioListenButton');
+
+playButton.addEventListener('click', () => {
+  if (audio.paused || audio.ended) {
+    audio.play();
+    playButton.innerHTML = '<img src="images/pausebutton.png" alt="pausebutton">';
+  } else {
+    audio.pause();
+    playButton.innerHTML = '<img src="images/playbutton.png" alt="playbutton">';
+  }
+});
+
+document.getElementById('volumeSlider').addEventListener('input', function() {
+  var audio = document.getElementById('audioIn');
+  audio.volume = this.value;
+});
+
+
+function revealHints (){
+  if (guessCount > 3-1) {
+    revealHintOne();
+  }if (guessCount > 5-1) {
+    revealHintTwo();
+  }if (guessCount > 8-1) {
+    revealHintThree();
+  }
+}
+
+function blurHints(){
+  let hintOne = document.getElementById("hintOne");
+  let hintTwo = document.getElementById("hintTwo");
+  let hintThree = document.getElementById("hintThree");
+
+
+  if (guessCount <  3-1) {
+    console.log("blurred 1");
+    hintOne.classList.add("blur");
+  }
+  if (guessCount < 5-1) {
+    hintTwo.classList.add("blur");
+  }
+  if (guessCount < 8-1) {
+    hintThree.classList.add("blur");
+  }
+
+
+}

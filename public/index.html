@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="darkreader-lock">
   <title>Tarkovdle</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -18,17 +19,51 @@
   <div class="container">
 
 
+  <div class="locked-hints">
+    <div class ="menutitle">
+      <div id = "menustring">
+        <h1>Guess today's Escape From Tarkov weapon</h1>
+      </div>
+    </div>
 
-    <div id="hintOne">
-      <button id = "showOne"> Reveal Audio Hint</button>
-      <div id= "audioHint">
-        <audio id = audioIn controls>
+
+    <div class="hintButtons">
+      <div id="hintOne">
+        <img src="images/volumebutton.png" alt="Volume Button">
+        <p>Audio Hint</p>
+      </div>
+      <div id="hintTwo">
+        <img src="images/eye.png" alt="Eye Button">
+        <p>Icon Hint</p>
+      </div>
+      <div id="hintThree">
+        <img src="images/questionsign.png" alt="Question Button">
+        <p>Name Hint</p>
+      </div>
+    </div>
+
+    <div class="hintContent">
+
+      <div class="audioHint">
+        <audio id = audioIn>
           <source src="path/to/your/audiofile.mp3" type="audio/mpeg">
           Your browser does not support the audio element.
         </audio>
-      <button id = "audioListenButton">Listen to Weapon</button>
+
+        <div id = "audioListenButton">
+          <img src="images/playbutton.png" alt="Play Button">
+        </div>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
       </div>
+
+      <div class="iconHint">
+          <img src ="path/to/your/img.webp" alt="hintImage" id="hintImage">
+      </div>
+
     </div>
+
+
+  </div>
 
 
 
@@ -43,9 +78,12 @@
 
       <ul id="weaponList" class="weapon-list"></ul>
     </div>
-        
-    <p id="result"></p>
-    <p id="popup"></p>
+
+
+    <div class="deleteMeWhenDone">
+      <p id="result"></p>
+      <p id="popup"></p>
+    </div>
     </div>
     
 
@@ -53,17 +91,41 @@
       <div class="hintDetailContainer">
           <div>Weapon</div>
           <div>Ammo Type</div>
-          <div>Price Range</div>
           <div>Weapon Type</div>
+          <div>Price Range</div>
+          <div>Weight</div>
+          <div>Rate of Fire</div>
           <div>Firing Modes</div>
       </div>
 
+   <div id = "hintListContainer">
     <ul id="hintList" class="hints-list"></ul>
+  </div>
+
     </div>
 
     <div class = "winContainer" id="winHolder">
       <div id="countdown"></div>
       <div id="winnerCount"></div>
+    </div>
+
+    <div class ="creditContainer">
+      <p>
+        Icons used on this site:<br>
+        <a href="https://www.flaticon.com/free-icons/question" title="Question icons">
+          Question Button Icon created by Dave Gandy - Flaticon
+        </a><br>
+        <a href="https://www.flaticon.com/free-icons/volume" title="volume icons">
+          Volume Button Icon created by Bharat Icons - Flaticon
+        </a><br>
+        <a href="https://www.flaticon.com/free-icons/play" title="play icons">
+          Play Button created by Freepik - Flaticon
+        </a><br>
+        <a href="https://www.flaticon.com/free-icons/eye" title="eye icons">
+          Eye icons created by Gregor Cresnar - Flaticon
+        </a>
+
+    </p>
     </div>
 
 
