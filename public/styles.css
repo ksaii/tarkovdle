@@ -140,7 +140,10 @@ main{
   
   .hintButtons div p {
     font-size: x-small;
-    
+  }
+
+  .hintButtons div p.smallFont {
+    font-size: small;
   }
 
   .hintButtons div img {
@@ -162,6 +165,11 @@ main{
     transform: scale(1.1);
     
   }
+
+  .greyscale-blur {
+    filter: grayscale(100%) blur(5px);
+  }
+
 
   
 
@@ -217,6 +225,8 @@ main{
   .iconHint img {
     height: 84px;
     width: 84px;
-    filter:blur(3px);
+    filter: grayscale(100%) blur(7px);
+    transform: rotate(180deg);
+
   }
   

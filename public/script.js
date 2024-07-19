@@ -455,6 +455,7 @@ document.getElementById("hintOne").addEventListener("click", function () {
 function revealHintOne() {
   let aButton = document.querySelector(".hintButtons #hintOne img");
   let aTxt = document.querySelector(".hintButtons #hintOne p");
+  aTxt.classList.add("smallFont");
   aTxt.textContent = 'Audio Hint';
   aButton.classList.remove("blur");
   aButton.classList.add("hover-effect");
@@ -491,6 +492,7 @@ document.getElementById("hintTwo").addEventListener("click",function() {
 function revealHintTwo() {
   let bButton = document.querySelector(".hintButtons #hintTwo img");
   let bTxt = document.querySelector(".hintButtons #hintTwo p");
+  bTxt.classList.add("smallFont");
   bTxt.textContent = 'Icon Hint';
 
   bButton.classList.remove("blur");
@@ -528,6 +530,7 @@ document.getElementById("hintThree").addEventListener("click",function() {
 function revealHintThree() {
   let cButton = document.querySelector(".hintButtons #hintThree img");
   let cTxt = document.querySelector(".hintButtons #hintThree p");
+  cTxt.classList.add("smallFont");
   cTxt.textContent = 'Name Hint';
 
   cButton.classList.remove("blur");
