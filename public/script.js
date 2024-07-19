@@ -414,6 +414,17 @@ function clearInput() {
   clearBox.value = "";
 }
 
+function revealHintButtons() {
+  var welcomeTitle = document.getElementsByClassName("welcometitle");
+  welcomeTitle[0].style.display = "none";
+  var hintButtons = document.getElementsByClassName("hintButtons");
+  
+  hintButtons[0].style.display = "flex";
+  setTimeout(() => {
+    hintButtons[0].classList.add('transition-effect');
+  }, 100);
+}
+
 document.getElementById("hintOne").addEventListener("click", function () {
   if(guessCount > 3-1){
     console.log("h1 clicked");
@@ -442,8 +453,9 @@ document.getElementById("hintOne").addEventListener("click", function () {
   });
 
 function revealHintOne() {
-  let aButton = document.getElementById("hintOne");
-
+  let aButton = document.querySelector(".hintButtons #hintOne img");
+  let aTxt = document.querySelector(".hintButtons #hintOne p");
+  aTxt.textContent = 'Audio Hint';
   aButton.classList.remove("blur");
   aButton.classList.add("hover-effect");
 }
@@ -477,7 +489,9 @@ document.getElementById("hintTwo").addEventListener("click",function() {
 })
 
 function revealHintTwo() {
-  let bButton = document.getElementById("hintTwo");
+  let bButton = document.querySelector(".hintButtons #hintTwo img");
+  let bTxt = document.querySelector(".hintButtons #hintTwo p");
+  bTxt.textContent = 'Icon Hint';
 
   bButton.classList.remove("blur");
   bButton.classList.add("hover-effect");
@@ -512,7 +526,9 @@ document.getElementById("hintThree").addEventListener("click",function() {
 })
 
 function revealHintThree() {
-  let cButton = document.getElementById("hintThree");
+  let cButton = document.querySelector(".hintButtons #hintThree img");
+  let cTxt = document.querySelector(".hintButtons #hintThree p");
+  cTxt.textContent = 'Name Hint';
 
   cButton.classList.remove("blur");
   cButton.classList.add("hover-effect");
@@ -534,9 +550,9 @@ let guessCount = 0;
 function guessCountAdd() {
   guessCount++;
 
+
   console.log("GC:", guessCount);
   localStorage.setItem('guessCount', guessCount);
-
 
 
 }
@@ -680,33 +696,49 @@ document.getElementById('volumeSlider').addEventListener('input', function() {
   audio.volume = this.value;
 });
 
+const hintsReqArray =[5,7,9] // This Array Contains 3 ints which determine the minimum attempts for the hints 
+
 
 function revealHints (){
-  if (guessCount > 3-1) {
+  if (guessCount <= hintsReqArray[0]) {
+    let aTxt = document.querySelector(".hintButtons #hintOne p");
+    aTxt.textContent = `Audio Hint in \n${hintsReqArray[0]-guessCount} attempts`;
+  }if (guessCount <= hintsReqArray[1]) {
+    let bTxt = document.querySelector(".hintButtons #hintTwo p");
+    bTxt.textContent = `Icon Hint in \n${hintsReqArray[1]-guessCount} attempts`;
+  }if (guessCount <= hintsReqArray[2]) {
+    let cTxt = document.querySelector(".hintButtons #hintThree p");
+    cTxt.textContent = `Name Hint in \n${hintsReqArray[2]-guessCount} attempts`;
+  }
+
+
+  if (guessCount >= 2) {
+    revealHintButtons();
+  }if (guessCount >= hintsReqArray[0]) {
     revealHintOne();
-  }if (guessCount > 5-1) {
+  }if (guessCount >= hintsReqArray[1]) {
     revealHintTwo();
-  }if (guessCount > 8-1) {
+  }if (guessCount >= hintsReqArray[2]) {
     revealHintThree();
   }
 }
 
 function blurHints(){
-  let hintOne = document.getElementById("hintOne");
-  let hintTwo = document.getElementById("hintTwo");
-  let hintThree = document.getElementById("hintThree");
+  let hintOne = document.querySelector(".hintButtons #hintOne img");
+  let hintTwo = document.querySelector(".hintButtons #hintTwo img");
+  let hintThree = document.querySelector(".hintButtons #hintThree img");
 
 
-  if (guessCount <  3-1) {
-    console.log("blurred 1");
+  if (guessCount <  hintsReqArray[0]) {
     hintOne.classList.add("blur");
   }
-  if (guessCount < 5-1) {
+  if (guessCount < hintsReqArray[1]) {
     hintTwo.classList.add("blur");
   }
-  if (guessCount < 8-1) {
+  if (guessCount < hintsReqArray[2]) {
     hintThree.classList.add("blur");
   }
 
 
 }
+
