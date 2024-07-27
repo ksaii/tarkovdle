@@ -74,14 +74,19 @@
 
     <div class="autocomplete-container">
 
-      <div class="input-button-wrapper">
-
+      <div class="input-container">
+      <div class="input-box-wrapper">
       <input placeholder="Type Gun Name..." type="text" id="searchBox" autocomplete="off" onkeyup="filterList()">
-      <button id="submitGuess">Submit Guess</button>
-    </div> 
+      </div> 
+      <div class = "input-button-wrapper" id = "submitGuess">
+        <img src ="images/login.png" alt="login">
+      </div>
+    </div>
 
-
+    <div class="weapon-list-container">
       <ul id="weaponList" class="weapon-list"></ul>
+    </div>
+
     </div>
 
 
@@ -93,18 +98,21 @@
     
 
     <div class = "hintsContainer">
+      <div class="subHintsContainer">
       <div class="hintDetailContainer">
           <div>Weapon</div>
           <div>Ammo Type</div>
           <div>Weapon Type</div>
           <div>Price Range</div>
           <div>Weight</div>
-          <div>Rate of Fire</div>
+          <div>Fire Rate</div>
           <div>Firing Modes</div>
-      </div>
+        </div>
+      
 
    <div id = "hintListContainer">
     <ul id="hintList" class="hints-list"></ul>
+  </div>
   </div>
 
     </div>
@@ -128,6 +136,9 @@
         </a><br>
         <a href="https://www.flaticon.com/free-icons/eye" title="eye icons">
           Eye icons created by Gregor Cresnar - Flaticon
+        </a><br>
+        <a href="https://www.flaticon.com/free-icons/login" title="login icons">
+          Login icons created by Artem Buz - Flaticon
         </a>
 
     </p>

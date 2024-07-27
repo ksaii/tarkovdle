@@ -426,7 +426,7 @@
     "weight": 3.322 ,
     "fire_rate": 800,
     "image": "https://assets.tarkov.dev/5d4d617f86f77449c463d107-icon.webp",
-    "sound": "sounds/TX-15_DML.mp3"
+    "sound": "sounds/TX-15.mp3"
   },
   {
     "name": "M4A1",
@@ -526,17 +526,6 @@
     "fire_rate": 700,
     "image": "https://assets.tarkov.dev/5ac4ad3686f774181345c3da-icon.webp",
     "sound": "sounds/M1A.mp3"
-  },
-  {
-    "name": "SIG MPX",
-    "type": "Sub Machine Gun",
-    "ammo_type": "9x19mm Parabellum",
-    "firing_modes": ["Single", "Full-Auto"],
-    "price_range": 50625,
-    "weight": 2.872 ,
-    "fire_rate": 850,
-    "image": "https://assets.tarkov.dev/58dffca786f774083a256ab1-icon.webp",
-    "sound": "sounds/SIG_MPX.mp3"
   },
   {
     "name": "UMP-45",

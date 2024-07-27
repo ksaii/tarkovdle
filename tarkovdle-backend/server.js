@@ -36,10 +36,12 @@ app.get('/api/validate-guess', (req, res) => {
 
   if (userGuess === dailyWeaponName) {
     const storedGuess = weapons.find(weapon => weapon.name.toUpperCase() === userGuess);
+    console.log("stored guess: ",storedGuess.name);
     res.json({ correct: true, message: 'Correct! You guessed the daily weapon.',filteredGuess: storedGuess});
     console.log("Guess",storedGuess);
   } else {
     const storedGuess = weapons.find(weapon => weapon.name.toUpperCase() === userGuess);
+    console.log("stored guess: ",storedGuess.name);
     console.log("more backend test: ", storedGuess);
     res.json({ correct: false, message: 'Incorrect. Try again!', filteredGuess: storedGuess });
     console.log("Guess",storedGuess);

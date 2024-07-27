@@ -38,6 +38,20 @@ html {
 
 }
 
+html::before { 
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("images/woodsmenu.png") no-repeat center center;
+  background-size: cover;
+  filter: blur(10px); 
+  z-index: -1;
+} 
+
+
 *, *::before, *::after {
   box-sizing: inherit;
   margin: 0;
@@ -49,7 +63,7 @@ body {
 
 }
 main{
-
+ max-width: 400px;
 }
 
 
@@ -65,10 +79,15 @@ main{
   margin-top: 20px;
   color: #9a8866;
   font-size: 40.4px;
-  background-color: black;
+  background-color: rgba(255, 255, 255, 0.1);;
   border: 4px solid #9a8866;
   border-radius: 10px;
 }
+
+
+/*Custom Identifiers*/
+
+/*******************/
 
 
 /*container*/
@@ -87,6 +106,7 @@ main{
     border-radius: 10px;
     border: 4px solid #9a8866;
     background-color: rgba(255, 255, 255, 0.1);
+    cursor: default;
   }
 
 
@@ -97,6 +117,7 @@ main{
     padding: 5px;
     
   }
+
   #menustring h1  {
     font-weight: 700;
     font-size: large;
@@ -151,27 +172,6 @@ main{
     height: 60px;
   }
 
-  .hover-effect:hover {
-    transform: scale(1.1);
-
-  }
-  
-  .blur {
-    filter: blur(5px);
-  }
- 
-  .transition-effect {
-    opacity: 1;
-    transform: scale(1.1);
-    
-  }
-
-  .greyscale-blur {
-    filter: grayscale(100%) blur(5px);
-  }
-
-
-  
 
 
   .hintContent{
@@ -229,4 +229,421 @@ main{
     transform: rotate(180deg);
 
   }
+  /****************************/
   
+
+  /*autocomplete-container sub*/
+
+  .autocomplete-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px 0px;
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: row;
+    
+  }
+
+  .input-box-wrapper{
+    display:flex;
+    width: 100%;
+    padding-right: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #searchBox {
+    font-family: inherit;
+    color: #9a8866;
+    font-size: 1rem;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    border-radius: 0.2rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    height: 50%;
+    width: 100%;
+    display: block;
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+    transition: all 0.1s;
+  }
+
+  #searchBox:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-bottom: 0.3rem solid #9a8866;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+  }
+
+  #searchBox:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0.3rem 0.7rem rgba(0, 0, 0, 0.25);
+  }
+
+  /* For Chrome, Safari, and Edge */
+  ::-webkit-scrollbar {
+  width: 12px; /* width of the scrollbar */
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2); /* color of the scrollbar track */
+  border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+  background: #888; /* color of the scrollbar handle */
+  border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+  background: #555; /* color of the scrollbar handle on hover */
+  }
+
+
+  .input-button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .input-button-wrapper img{
+    max-width: 50px;
+    max-height: 50px;
+  }
+  
+  .input-button-wrapper img:hover {
+    transform: scale(1.1);
+  }
+
+  .weapon-list-container{
+    width: 85%;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+  .weapon-list{
+    cursor: default;
+    display: none;
+    flex-direction: column;
+    align-items: baseline;
+  }
+
+
+
+  .weapon-list li {
+    display: flex;
+    width: 100%;
+    height: 64px;
+    text-align: center;
+    align-items: center;
+    
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: ease-in-out 0.2s;
+  }
+
+  .weapon-list li:hover {
+    background-color: rgba(255, 255, 0, 0.15);
+  }
+
+  .weapon-list li img {
+    margin-right: 10%;
+    margin-left: 5%;
+    width: 50px;
+    height: 50px;
+  }
+
+
+
+
+
+  /***************************/
+
+  /*hintsContainer*/
+
+  .hintsContainer{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .subHintsContainer{
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    
+  }
+
+  .hintDetailContainer{
+    display: flex;
+    flex-direction: row;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    
+    
+
+  }
+ 
+  .hintDetailContainer div{
+    display: flex;
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    min-height: 80px;
+
+    word-wrap: break-word;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hintDetailContainer.visible{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #hintListContainer {
+   display: flex;
+   width: 100%;
+  }
+
+  .hints-list {
+    display: flex;
+    width: 100%;
+    flex-direction: column-reverse;
+  }
+
+  .hints-list li div{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .hints-list li div div{
+    display: flex;
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    min-height: 80px;
+
+    border: 1px solid black ;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: small;
+
+    position: relative; /* Needed for the loading bar positioning */
+    overflow: hidden; /* Ensures content stays within the div */
+    opacity: 0; /* Initially hidden */
+  }
+  
+
+
+
+  .hints-list li div div.animation{
+    animation: reveal 3s forwards; /* Reveal animation */
+  }
+
+  .hints-list li div div.visible{
+    opacity: 1;
+    transition: none !important;
+  }
+
+ 
+
+
+
+
+
+
+/* Keyframes for loading bar */
+@keyframes load {
+  0% {
+    transform: scaleX(0);
+  }
+  99% {
+    transform: scaleX(1);
+  }
+  100%{
+    transform: scaleX(0);
+  }
+}
+
+/* Keyframes for spinning circle */
+@keyframes spin {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+/* Keyframes for disappearing animation */
+@keyframes disappear {
+  0% {
+      opacity: 1;
+  }
+  99% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+  }
+}
+
+/* Keyframes for revealing the content */
+@keyframes reveal {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/* Keyframes for appearing animation */
+@keyframes appear {
+  0% {
+      opacity: 0;
+  }
+  99% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+/* Staggered animation delays */
+.hints-list li div div:nth-child(2)::before,
+.hints-list li div div:nth-child(2),
+.hints-list li div div:nth-child(2)::after {
+  animation-delay: 0.5s;
+
+}
+
+.hints-list li div div:nth-child(3)::before,
+.hints-list li div div:nth-child(3),
+.hints-list li div div:nth-child(3)::after {
+  animation-delay: 0.7s;
+}
+
+.hints-list li div div:nth-child(4)::before,
+.hints-list li div div:nth-child(4),
+.hints-list li div div:nth-child(4)::after {
+  animation-delay: 0.8s;
+}
+
+.hints-list li div div:nth-child(5)::before,
+.hints-list li div div:nth-child(5),
+.hints-list li div div:nth-child(5)::after  {
+  animation-delay: 0.9s;
+}
+.hints-list li div div:nth-child(6)::before,
+.hints-list li div div:nth-child(6),
+.hints-list li div div:nth-child(6)::after  {
+  animation-delay: 1s;
+}
+.hints-list li div div:nth-child(7)::before,
+.hints-list li div div:nth-child(7),
+.hints-list li div div:nth-child(7)::after  {
+  animation-delay: 1.1s;
+}
+
+
+  .hints-list li div div img{
+    width: 80px;
+    height: 80px;
+  }
+  
+
+  #hintList li {
+    list-style-type: none;   /*this removes bullet points*/
+  } 
+
+
+
+
+
+/****************************/
+
+
+
+
+
+
+
+/*Custom Identifiers*/
+.hover-effect:hover {
+  transform: scale(1.1);
+
+}
+
+.blur {
+  filter: blur(5px);
+}
+
+.transition-effect {
+  opacity: 1;
+  transform: scale(1.1);
+  
+}
+
+.greyscale-blur {
+  filter: grayscale(100%) blur(5px);
+}  
+
+.no-text-cursor {
+  cursor: default;
+}
+
+
+
+@keyframes winAnimation {
+  0% {
+    transform: scale(0.5) rotate(0deg);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(0.7) rotate(20deg);
+    opacity: 0.5;
+  }
+  60% {
+    transform: scale(1.1) rotate(-10deg);
+    opacity: 0.7;
+  }
+  80% {
+    transform: scale(1.05) rotate(5deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/*******************/
+
+/*media query*/
+
+@media (max-width: 564px){
+
+  main {
+    max-width: 350px;
+  }
+  .subHintsContainer{
+    overflow: auto;
+  }
+
+  .hintDetailContainer div{
+    display: flex;
+    width: 64px;
+    padding-right: 1%;
+    word-wrap: break-word;
+  }
+
+  
+}

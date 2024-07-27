@@ -1,22 +1,26 @@
 function filterList() {
   let input = document.getElementById("searchBox");
   let filter = input.value.toLowerCase();
+  let ulContainer = document.getElementsByClassName("weapon-list-container");
   let ul = document.getElementById("weaponList");
   let li = ul.getElementsByTagName("li");
 
   // Show the list if there's input
-  ul.style.display = filter ? "block" : "none";
+  ul.style.display = filter ? "flex" : "none";
 
   for (let i = 0; i < li.length; i++) {
     let text = li[i].textContent || li[i].innerText;
     if (text.toLowerCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
+      li[i].style.display = ""; 
     } else {
       li[i].style.display = "none";
     }
   }
 }
 
+document.getElementById("searchBox").addEventListener("click",function (event){
+  filterList();
+})
 
 document.getElementById("reset").addEventListener("click",function (event) {
   clearAll=true;
@@ -27,6 +31,7 @@ var clearAll = false;
 // Optionally, add event listener to close the dropdown when clicking outside
 document.addEventListener("click", function (event) {
   let ul = document.getElementById("weaponList");
+  let ulContainer = document.getElementsByClassName("weapon-list-container");
   let input = document.getElementById("searchBox");
   if (!input.contains(event.target) && !ul.contains(event.target)) {
     ul.style.display = "none";
@@ -79,6 +84,8 @@ let weapons = [];
 
 
 document.addEventListener("DOMContentLoaded", () => {
+
+
   
   loadState();
   loadWeapons();
@@ -165,15 +172,18 @@ function compareHints() {
 
   const li = document.createElement("li");
   const img = document.createElement("img");
-  const subli = document.createElement("div");
+  
 
   const hintDetailContainer = document.querySelector('.hintDetailContainer');
   const details = document.createElement("div");
 
+  const weaponImage = document.createElement("div");
   img.src = verifiedWeapon.image;
   img.alt = "Weapon img";
-  details.appendChild(img);
-  
+  weaponImage.appendChild(img);
+  weaponImage.id = "imageBox";
+  details.appendChild(weaponImage);
+
 
   
 
@@ -184,11 +194,13 @@ function compareHints() {
 
   if (correctWeapon.ammo_type !== verifiedWeapon.ammo_type) {
     const ammoType = document.createElement("div");
+    ammoType.id = "infoBox";
     ammoType.textContent = `${verifiedWeapon.ammo_type}`;
     ammoType.style.backgroundColor = "red";
     details.appendChild(ammoType);
   } else {
     const ammoType = document.createElement("div");
+    ammoType.id = "infoBox";
     ammoType.textContent = `${correctWeapon.ammo_type}`;
     ammoType.style.backgroundColor = "green";
     details.appendChild(ammoType);
@@ -199,11 +211,13 @@ function compareHints() {
 
    if (correctWeapon.type !== verifiedWeapon.type) {
     const type = document.createElement("div");
+    type.id = "infoBox";
     type.textContent = `${verifiedWeapon.type}`;
     type.style.backgroundColor = "red";
     details.appendChild(type);
   } else {
     const type = document.createElement("div");
+    type.id = "infoBox";
     type.textContent = `${correctWeapon.type}`;
     type.style.backgroundColor = "green";
     details.appendChild(type);
@@ -216,12 +230,14 @@ function compareHints() {
 
     if(correctWeapon.price_range > verifiedWeapon.price_range){
     const priceRange = document.createElement("div");
+    priceRange.id = "infoBox";
     priceRange.textContent = `${verifiedWeapon.price_range}₽`;
 
     priceRange.style.backgroundColor = "red";
     details.appendChild(priceRange);
     }else{
     const priceRange = document.createElement("div");
+    priceRange.id = "infoBox";
     priceRange.textContent = `${verifiedWeapon.price_range}₽`;
 
     priceRange.style.backgroundColor = "red";
@@ -230,6 +246,7 @@ function compareHints() {
 
   } else {
     const priceRange = document.createElement("div");
+    priceRange.id = "infoBox";
     priceRange.textContent = `${correctWeapon.price_range}₽`;
     priceRange.style.backgroundColor = "green";
     details.appendChild(priceRange);
@@ -246,12 +263,14 @@ function compareHints() {
 
     if(correctWeapon.weight > verifiedWeapon.weight){
     const weaponWeight = document.createElement("div");
+    weaponWeight.id = "infoBox";
     weaponWeight.textContent = `${verifiedWeapon.weight}kg`;
 
     weaponWeight.style.backgroundColor = "red";
     details.appendChild(weaponWeight);
     }else{
     const weaponWeight = document.createElement("div");
+    weaponWeight.id = "infoBox";
     weaponWeight.textContent = `${verifiedWeapon.weight}kg`;
 
     weaponWeight.style.backgroundColor = "red";
@@ -260,6 +279,7 @@ function compareHints() {
 
   } else {
     const weaponWeight = document.createElement("div");
+    weaponWeight.id = "infoBox";
     weaponWeight.textContent = `${correctWeapon.weight}kg`;
     weaponWeight.style.backgroundColor = "green";
     details.appendChild(weaponWeight);
@@ -272,12 +292,14 @@ function compareHints() {
 
       if(correctWeapon.fire_rate > verifiedWeapon.fire_rate){
       const weaponFireRate = document.createElement("div");
+      weaponFireRate.id = "infoBox";
       weaponFireRate.textContent = `${verifiedWeapon.fire_rate}RPM`;
   
       weaponFireRate.style.backgroundColor = "red";
       details.appendChild(weaponFireRate);
       }else{
       const weaponFireRate = document.createElement("div");
+      weaponFireRate.id = "infoBox";
       weaponFireRate.textContent = `${verifiedWeapon.fire_rate}RPM`;
   
       weaponFireRate.style.backgroundColor = "red";
@@ -286,6 +308,7 @@ function compareHints() {
 
     } else {
       const weaponFireRate = document.createElement("div");
+      weaponFireRate.id = "infoBox";
       weaponFireRate.textContent = `${correctWeapon.fire_rate}RPM`;
       weaponFireRate.style.backgroundColor = "green";
       details.appendChild(weaponFireRate);
@@ -297,6 +320,7 @@ function compareHints() {
 
   if (!arraysEqual(correctWeapon.firing_modes, verifiedWeapon.firing_modes)) {
     const fmodes = document.createElement("div");
+    fmodes.id = "infoBox";
     fmodes.textContent = `${verifiedWeapon.firing_modes.join(
       ", "
     )}`;
@@ -304,6 +328,7 @@ function compareHints() {
     details.appendChild(fmodes);
   } else {
     const fmodes = document.createElement("div");
+    fmodes.id = "infoBox";
     fmodes.textContent = `${correctWeapon.firing_modes.join(
       ", "
     )}`;
@@ -323,9 +348,9 @@ function compareHints() {
 
   // Add more comparisons for other details as needed
 
-  subli.appendChild(details);
+ 
 
-  li.appendChild(subli);
+  li.appendChild(details);
 
   guessesArray.push({
     imgSrc: verifiedWeapon.image,
@@ -333,13 +358,30 @@ function compareHints() {
   });
 
   ul.appendChild(li);
-  saveState();
+  
 
     // Trigger the transition
     setTimeout(() => {
-      li.classList.add('visible'); 
+      document.querySelectorAll('#infoBox').forEach((div, index) => {
+        div.classList.add('animation');
+      });
+
+       let imageBox = document.querySelector('#imageBox');
+       imageBox.classList.add('visible');
+      
+      
+      
       hintDetailContainer.classList.add('visible');
     }, 100);
+
+    setTimeout(() => {
+    document.querySelectorAll('.hints-list li div div').forEach((div, index) => {
+      div.removeAttribute('id');
+      div.classList.add('visible');
+    });
+  }, 20000);
+    
+  saveState();
 }
 
 function arraysEqual(arr1, arr2) {
@@ -362,11 +404,12 @@ function removeWeaponFromDropdown(weaponName) {
 
   console.log("Removing ", weaponName, "from Dropdown");
   
+  
   for (let i = 0; i < li.length; i++) {
-    if ((li[i].textContent.toUpperCase()).includes(weaponName)) {
+    if ((li[i].textContent.toUpperCase()).includes(weaponName.toUpperCase())) {
       ul.removeChild(li[i]);
       // Remove the weapon from the weapons array
-      weapons = weapons.filter(weapon => weapon.name !== weaponName);
+      weapons = weapons.filter(weapon => weapon.name.toUpperCase() !== weaponName.toUpperCase());
       saveWeapons(); // Save the updated weapons array to localStorage
       console.log("Array after removal: ", weapons);
       break;
@@ -620,23 +663,24 @@ function loadState() {
     const hintList = document.getElementById("hintList");
     hintList.innerHTML = "";
     parsedState.guesses.forEach(guess => {
-      const subli = document.createElement("div");
       const li = document.createElement("li");
       const img = document.createElement("img");
-      img.src = guess.imgSrc;
-      img.alt = "Weapon img";
-      subli.appendChild(img);
+  
 
       const details = document.createElement("div");
       details.innerHTML = guess.detailsHTML;
-      subli.appendChild(details);
+      li.appendChild(details);
 
-      li.appendChild(subli);
-
+    
       li.classList.add('visible');
       hintList.appendChild(li);
+
+    
     });
 
+    document.querySelectorAll(".hints-list li div div").forEach((div, index) => {
+      div.classList.add('visible');
+    });
     revealHints();
   }
 }
@@ -744,4 +788,5 @@ function blurHints(){
 
 
 }
+
 
