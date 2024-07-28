@@ -85,9 +85,7 @@ main{
 }
 
 
-/*Custom Identifiers*/
 
-/*******************/
 
 
 /*container*/
@@ -222,6 +220,10 @@ main{
     width: fit-content;
   }
 
+  .iconHint p{
+    font-weight: 5px;
+  }
+
   .iconHint img {
     height: 84px;
     width: 84px;
@@ -229,7 +231,7 @@ main{
     transform: rotate(180deg);
 
   }
-  /****************************/
+  /********end-locked-hints*****/
   
 
   /*autocomplete-container sub*/
@@ -360,7 +362,7 @@ main{
 
 
 
-  /***************************/
+  /*******end-autocomplete-container-sub******/
 
   /*hintsContainer*/
 
@@ -437,27 +439,106 @@ main{
 
     position: relative; /* Needed for the loading bar positioning */
     overflow: hidden; /* Ensures content stays within the div */
-    opacity: 0; /* Initially hidden */
+   
+
+
+    /*transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    /*backface-visibility: hidden; /* Ensure the back face is not visible during the flip */
+    opacity: 0;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    backface-visibility: hidden; /* Ensure the back face is not visible during the flip */
+    box-shadow: 0px 0px 1px 1px #0000001a;
+    
   }
+
   
+  .hints-list li div div.correctMatch {
+    animation: flipIn 0.8s forwards,pulse-animation 2s 3;  /*pulse animation*/;
+  }  
+  .hints-list li div div.nullMatch {
+    animation: flipIn 0.8s forwards;  /*pulse animation*/;
+  }  
 
 
 
-  .hints-list li div div.animation{
-    animation: reveal 3s forwards; /* Reveal animation */
+
+  
+/*.hints-list li div div.animation {   /*flip animation
+  animation: flipIn 0.8s forwards;
+}*/
+
+
+  scrappedfadeinanimation{
+    opacity: 1;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-out forwards;
   }
 
   .hints-list li div div.visible{
     opacity: 1;
     transition: none !important;
   }
-
  
 
 
 
+  scrappedslotmachine {
+    animation: slotSpin 1s ease-in-out forwards;
+  }
 
 
+  /* Pulse animation */
+@keyframes pulse-animation {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 255, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 30px 20px rgba(0, 255, 0, 0);
+  }
+}
+
+  
+@keyframes flipIn {
+  0% {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+  
+  @keyframes slotSpin {
+    0% {
+      transform: translateY(0);
+    }
+    25% {
+      transform: translateY(-50px);
+    }
+    50% {
+      transform: translateY(50px);
+    }
+    75% {
+      transform: translateY(-25px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
 
 /* Keyframes for loading bar */
 @keyframes load {
@@ -521,36 +602,36 @@ main{
 .hints-list li div div:nth-child(2)::before,
 .hints-list li div div:nth-child(2),
 .hints-list li div div:nth-child(2)::after {
-  animation-delay: 0.5s;
+  animation-delay: 0.1s;
 
 }
 
 .hints-list li div div:nth-child(3)::before,
 .hints-list li div div:nth-child(3),
 .hints-list li div div:nth-child(3)::after {
-  animation-delay: 0.7s;
+  animation-delay: 0.2s;
 }
 
 .hints-list li div div:nth-child(4)::before,
 .hints-list li div div:nth-child(4),
 .hints-list li div div:nth-child(4)::after {
-  animation-delay: 0.8s;
+  animation-delay: 0.3s;
 }
 
 .hints-list li div div:nth-child(5)::before,
 .hints-list li div div:nth-child(5),
 .hints-list li div div:nth-child(5)::after  {
-  animation-delay: 0.9s;
+  animation-delay: 0.4s;
 }
 .hints-list li div div:nth-child(6)::before,
 .hints-list li div div:nth-child(6),
 .hints-list li div div:nth-child(6)::after  {
-  animation-delay: 1s;
+  animation-delay: 0.5s;
 }
 .hints-list li div div:nth-child(7)::before,
 .hints-list li div div:nth-child(7),
 .hints-list li div div:nth-child(7)::after  {
-  animation-delay: 1.1s;
+  animation-delay: 0.6s;
 }
 
 
@@ -565,6 +646,18 @@ main{
   } 
 
 
+
+  /*******end-hintsContainer******/
+
+
+  /**winContainer**/
+
+
+
+
+
+
+  /*******end-winContainer*****/
 
 
 
@@ -625,7 +718,7 @@ main{
   }
 }
 
-/*******************/
+/*****end-container********/
 
 /*media query*/
 

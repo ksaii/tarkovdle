@@ -194,13 +194,14 @@ function compareHints() {
 
   if (correctWeapon.ammo_type !== verifiedWeapon.ammo_type) {
     const ammoType = document.createElement("div");
-    ammoType.id = "infoBox";
+    ammoType.id = "nullMatch";
+    ammoType.classList.add()
     ammoType.textContent = `${verifiedWeapon.ammo_type}`;
     ammoType.style.backgroundColor = "red";
     details.appendChild(ammoType);
   } else {
     const ammoType = document.createElement("div");
-    ammoType.id = "infoBox";
+    ammoType.id = "correctMatch";
     ammoType.textContent = `${correctWeapon.ammo_type}`;
     ammoType.style.backgroundColor = "green";
     details.appendChild(ammoType);
@@ -211,13 +212,13 @@ function compareHints() {
 
    if (correctWeapon.type !== verifiedWeapon.type) {
     const type = document.createElement("div");
-    type.id = "infoBox";
+    type.id = "nullMatch";
     type.textContent = `${verifiedWeapon.type}`;
     type.style.backgroundColor = "red";
     details.appendChild(type);
   } else {
     const type = document.createElement("div");
-    type.id = "infoBox";
+    type.id = "correctMatch";
     type.textContent = `${correctWeapon.type}`;
     type.style.backgroundColor = "green";
     details.appendChild(type);
@@ -230,14 +231,14 @@ function compareHints() {
 
     if(correctWeapon.price_range > verifiedWeapon.price_range){
     const priceRange = document.createElement("div");
-    priceRange.id = "infoBox";
+    priceRange.id = "nullMatch";
     priceRange.textContent = `${verifiedWeapon.price_range}₽`;
 
     priceRange.style.backgroundColor = "red";
     details.appendChild(priceRange);
     }else{
     const priceRange = document.createElement("div");
-    priceRange.id = "infoBox";
+    priceRange.id = "nullMatch";
     priceRange.textContent = `${verifiedWeapon.price_range}₽`;
 
     priceRange.style.backgroundColor = "red";
@@ -246,7 +247,7 @@ function compareHints() {
 
   } else {
     const priceRange = document.createElement("div");
-    priceRange.id = "infoBox";
+    priceRange.id = "correctMatch";
     priceRange.textContent = `${correctWeapon.price_range}₽`;
     priceRange.style.backgroundColor = "green";
     details.appendChild(priceRange);
@@ -263,14 +264,14 @@ function compareHints() {
 
     if(correctWeapon.weight > verifiedWeapon.weight){
     const weaponWeight = document.createElement("div");
-    weaponWeight.id = "infoBox";
+    weaponWeight.id = "nullMatch";
     weaponWeight.textContent = `${verifiedWeapon.weight}kg`;
 
     weaponWeight.style.backgroundColor = "red";
     details.appendChild(weaponWeight);
     }else{
     const weaponWeight = document.createElement("div");
-    weaponWeight.id = "infoBox";
+    weaponWeight.id = "nullMatch";
     weaponWeight.textContent = `${verifiedWeapon.weight}kg`;
 
     weaponWeight.style.backgroundColor = "red";
@@ -279,7 +280,7 @@ function compareHints() {
 
   } else {
     const weaponWeight = document.createElement("div");
-    weaponWeight.id = "infoBox";
+    weaponWeight.id = "correctMatch";
     weaponWeight.textContent = `${correctWeapon.weight}kg`;
     weaponWeight.style.backgroundColor = "green";
     details.appendChild(weaponWeight);
@@ -292,14 +293,14 @@ function compareHints() {
 
       if(correctWeapon.fire_rate > verifiedWeapon.fire_rate){
       const weaponFireRate = document.createElement("div");
-      weaponFireRate.id = "infoBox";
+      weaponFireRate.id = "nullMatch";
       weaponFireRate.textContent = `${verifiedWeapon.fire_rate}RPM`;
   
       weaponFireRate.style.backgroundColor = "red";
       details.appendChild(weaponFireRate);
       }else{
       const weaponFireRate = document.createElement("div");
-      weaponFireRate.id = "infoBox";
+      weaponFireRate.id = "nullMatch";
       weaponFireRate.textContent = `${verifiedWeapon.fire_rate}RPM`;
   
       weaponFireRate.style.backgroundColor = "red";
@@ -308,7 +309,7 @@ function compareHints() {
 
     } else {
       const weaponFireRate = document.createElement("div");
-      weaponFireRate.id = "infoBox";
+      weaponFireRate.id = "correctMatch";
       weaponFireRate.textContent = `${correctWeapon.fire_rate}RPM`;
       weaponFireRate.style.backgroundColor = "green";
       details.appendChild(weaponFireRate);
@@ -320,7 +321,7 @@ function compareHints() {
 
   if (!arraysEqual(correctWeapon.firing_modes, verifiedWeapon.firing_modes)) {
     const fmodes = document.createElement("div");
-    fmodes.id = "infoBox";
+    fmodes.id = "nullMatch";
     fmodes.textContent = `${verifiedWeapon.firing_modes.join(
       ", "
     )}`;
@@ -328,7 +329,7 @@ function compareHints() {
     details.appendChild(fmodes);
   } else {
     const fmodes = document.createElement("div");
-    fmodes.id = "infoBox";
+    fmodes.id = "correctMatch";
     fmodes.textContent = `${correctWeapon.firing_modes.join(
       ", "
     )}`;
@@ -352,36 +353,39 @@ function compareHints() {
 
   li.appendChild(details);
 
-  guessesArray.push({
-    imgSrc: verifiedWeapon.image,
-    detailsHTML: details.innerHTML
-  });
+  
 
   ul.appendChild(li);
   
 
+  guessesArray.push({
+    imgSrc: verifiedWeapon.image,
+    detailsHTML: details.innerHTML
+  });
+  
+
     // Trigger the transition
     setTimeout(() => {
-      document.querySelectorAll('#infoBox').forEach((div, index) => {
-        div.classList.add('animation');
+      document.querySelectorAll('#correctMatch').forEach((div, index) => {
+        div.classList.add('correctMatch');
       });
-
-       let imageBox = document.querySelector('#imageBox');
-       imageBox.classList.add('visible');
-      
+      document.querySelectorAll('#nullMatch').forEach((div, index) => {
+        div.classList.add('nullMatch');
+      });
+       document.querySelectorAll('#imageBox').forEach((imageBox, index) => {
+        imageBox.classList.add('visible');;
+        saveState();
+      });
+  
       
       
       hintDetailContainer.classList.add('visible');
     }, 100);
 
-    setTimeout(() => {
-    document.querySelectorAll('.hints-list li div div').forEach((div, index) => {
-      div.removeAttribute('id');
-      div.classList.add('visible');
-    });
-  }, 20000);
     
+
   saveState();
+
 }
 
 function arraysEqual(arr1, arr2) {
@@ -680,6 +684,7 @@ function loadState() {
 
     document.querySelectorAll(".hints-list li div div").forEach((div, index) => {
       div.classList.add('visible');
+      div.removeAttribute('id');
     });
     revealHints();
   }
