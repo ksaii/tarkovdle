@@ -443,13 +443,21 @@ let savedBool = false;
 
 function correctPop(win) {
   if (win) {
+    console.log("correct pop called");
     savedBool = true;
     document.getElementById("popup").innerText = "You finished";
     document.getElementById("result").innerText = "Correct! You guessed the daily weapon.";
+    document.getElementById("winHolder").style.display = "flex";
     setTimeout(() =>{
       document.getElementById("winHolder").scrollIntoView({behavior: 'smooth'});
-    },100);
+    },1400);
     
+    const correctIcon = document.createElement("img");
+    correctIcon.src = correctWeapon.image;
+    correctIcon.alt = "Correct Weapon Icon";
+    document.getElementById("correctImage").appendChild(correctIcon);
+
+    document.getElementById("attempts").innerHTML = (`Total Attempts: ${guessCount}`);
     updateCountdown();  
     numWinners();
     saveState();
@@ -473,7 +481,7 @@ function revealHintButtons() {
 }
 
 document.getElementById("hintOne").addEventListener("click", function () {
-  if(guessCount > 3-1){
+  if(guessCount >= hintsReqArray[0]){
     console.log("h1 clicked");
 
     const newAudioPath = correctWeapon.sound;
@@ -509,7 +517,7 @@ function revealHintOne() {
 }
 
 document.getElementById("hintTwo").addEventListener("click",function() {
-  if(guessCount > 5-1){
+  if(guessCount >= hintsReqArray[1]){
   console.log("h2 clicked");
 
 
@@ -547,7 +555,7 @@ function revealHintTwo() {
 }
 
 document.getElementById("hintThree").addEventListener("click",function() {
-  if(guessCount > 8-1){
+  if(guessCount >= hintsReqArray[2]){
   console.log("h3 clicked");
 
 
@@ -658,7 +666,7 @@ function loadState() {
       hintDetailContainer.classList.add('visible');
     }
     savedBool = parsedState.stateBool;
-    correctPop(savedBool);
+    
     guessCount = parsedState.guessCount;
     verifiedWeapon = parsedState.verifiedWeapon;
     correctWeapon = parsedState.correctWeapon;
@@ -687,6 +695,7 @@ function loadState() {
       div.removeAttribute('id');
     });
     revealHints();
+    correctPop(savedBool);
   }
 }
 
@@ -711,8 +720,30 @@ function clearLocalStorage() {
 
 
 
-function numWinners(){
+async function numWinners() {
+  try {
+    // Fetch data from the server
+    const response = await fetch('http://localhost:3000/api/site-data');
 
+    // Check if the response is ok (status in the range 200-299)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // Parse the response as JSON
+    const stats = await response.json();
+
+    // Log the response data to the console (for debugging purposes)
+    console.log("numWinners run", stats);
+
+    // Update the HTML element with the count of winners
+    document.getElementById('winnerCount').innerText = `${stats.count} people have guessed the weapon today!`;
+    document.getElementById('')
+  } catch (error) {
+    // Handle any errors that occur during the fetch or processing
+    console.error('Failed to fetch data:', error);
+    document.getElementById('winnerCount').innerText = 'Failed to load data';
+  }
 }
 
 

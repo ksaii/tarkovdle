@@ -7,11 +7,25 @@ const path = require('path');
 // Serve static files from the public directory
 app.use(express.static('../public'));
 
-// Load weapons data
+// Load and read Site Stats
+const statsFilePath = path.join(__dirname, '../site-stats.json');
+const stats = JSON.parse(fs.readFileSync(statsFilePath, 'utf-8'));
+
+// Load and read  weapons data
 const weapons = JSON.parse(fs.readFileSync(path.join(__dirname, '../weapons.json'), 'utf-8'));
 
-// Select a daily weapon (simple example, improve this as needed)
+//Function to write data to a file 
+function writeJsonData(file,data){
+  fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf-8');
+}
+
+
+// Select a daily weapon 
 const dailyWeapon =  weapons[Math.floor(Math.random() * weapons.length)];
+
+//delete 2 lines below when done
+const holder = dailyWeapon.name.toUpperCase(); 
+console.log(`Daily weapon: ${holder}`);
 
 // Endpoint to get daily weapon attributes
 app.get('/api/daily-weapon', (req, res) => {
@@ -37,6 +51,9 @@ app.get('/api/validate-guess', (req, res) => {
   if (userGuess === dailyWeaponName) {
     const storedGuess = weapons.find(weapon => weapon.name.toUpperCase() === userGuess);
     console.log("stored guess: ",storedGuess.name);
+    stats.total_wins += 1;
+    writeJsonData(statsFilePath,stats);
+
     res.json({ correct: true, message: 'Correct! You guessed the daily weapon.',filteredGuess: storedGuess});
     console.log("Guess",storedGuess);
   } else {
@@ -47,6 +64,18 @@ app.get('/api/validate-guess', (req, res) => {
     console.log("Guess",storedGuess);
   }
 });
+
+app.get('/api/site-data', (req,res) => {
+  const today = new Date().toISOString().slice(0,10);
+
+  if(stats.date !== today){
+    stats.date = today;
+    stats.total_wins = 0;
+  }
+  console.log(`api stats ${stats.total_wins}`);
+  res.json({count: stats.total_wins});
+
+})
 
 // Start the server
 app.listen(port, () => {
