@@ -8,10 +8,54 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
 
+/* Regular Bender */
 @font-face {
   font-family: 'Bender';
   src: url('fonts/Jovanny\ Lemonad\ -\ Bender.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
 }
+
+/* Bold Bender */
+@font-face {
+  font-family: 'Bender';
+  src: url('fonts/Jovanny\ Lemonad\ -\ Bender-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Italic Bender */
+@font-face {
+  font-family: 'Bender';
+  src: url('fonts/Jovanny\ Lemonad\ -\ Bender-Italic.woff') format('woff');
+  font-weight: 400; /* Assuming the italic font is the regular weight */
+  font-style: italic;
+}
+
+/* Italic Bender */
+@font-face {
+  font-family: 'Bender';
+  src: url('fonts/Jovanny\ Lemonad\ -\ Bender-BoldItalic.woff') format('woff');
+  font-weight: 700; /* Assuming the italic font is the regular weight */
+  font-style: italic;
+}
+
+/* Italic Bender */
+@font-face {
+  font-family: 'Bender';
+  src: url('fonts/Jovanny\ Lemonad\ -\ Bender-Light.woff') format('woff');
+  font-weight: 300; /* Assuming the italic font is the regular weight */
+  font-style: normal;
+}
+
+/* Italic Bender */
+@font-face {
+  font-family: 'Bender';
+  src: url('fonts/Jovanny\ Lemonad\ -\ Bender-LightItalic.woff.woff') format('woff');
+  font-weight: 300; /* Assuming the italic font is the regular weight */
+  font-style: italic;
+}
+
 
 
 
@@ -32,7 +76,7 @@ html {
 
   display: flex;
   justify-content: center;
-  align-items: center;
+
   min-height: 100vh;
   word-spacing: 1px;
 
@@ -64,6 +108,7 @@ body {
 }
 main{
  max-width: 400px;
+ 
 }
 
 
@@ -316,6 +361,7 @@ main{
   .input-button-wrapper img{
     max-width: 50px;
     max-height: 50px;
+    transition: transform 0.1s ease;
   }
   
   .input-button-wrapper img:hover {
@@ -669,10 +715,12 @@ main{
   }
 
   #countdown {
-    margin: 10% 0;
+    font-size: large;
+    margin: 2% 0;
   }
 
   #winnerCount {
+    font-size: larger;
     margin: 10% 0;
   }
 
@@ -684,6 +732,9 @@ main{
   }
 
   #attempts{
+    font-size: x-large;
+    font-weight: 500;
+    font-style: italic;
     margin: 10% 0 ;
   }
 
@@ -694,6 +745,126 @@ main{
 
 
   /*******end-winContainer*****/
+
+
+
+  /*******tutorialContainer*****/
+
+
+
+  .tutorialContainer{
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    margin: 20% 0;
+  }
+
+  .colorCodes{
+    display: flex;
+    flex-direction: row;
+    margin: 5% 0;
+  }
+
+  .colorCodes div{
+    display: flex;
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    min-height: 80px;
+    margin: 0 5px;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #exCorrect{
+    background-color: green;
+  }
+
+  #exWrong{
+    background-color: red;
+  }
+
+  #exPartial{
+    background-color: rgb(150,150,0);
+  }
+
+
+  #exArrowUp{
+    background-color: red;
+    align-items: center;
+    justify-content: center;
+    background-image: url('images/arrow-up.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width:100%;
+    height: 100%;
+  }
+
+  
+
+  #exArrowDown{
+    background-color: red;
+    align-items: center;
+    justify-content: center;
+    background-image: url('images/arrow-down.svg');
+    background-size: cover; /* Adjusts the size of the background image */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Prevents repeating the background image */
+    width: 100%; /* Adjust as needed */
+    height: 100%; /* Adjust as needed */
+  }
+
+
+
+
+  /*******end-tutorialContainer*****/
+
+
+  /******creditContainer*****/
+  .creditContainer{
+    display: flex;
+    margin: 50% 0;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .creditContainer div{
+    width: 64px;
+    height: 64px;
+    word-wrap: break-word;
+    font-size: large;
+    transition: transform 0.3s ease; 
+    margin: 5% 5%;
+  }
+
+  .icon{
+    color: #9a8866;
+    width: 50px;
+    height: 50px;
+  }
+  .creditContainer div:hover{
+    transform: scale(1.1);
+  }
+  .creditContainer p{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
+  }
+  .creditContainer p a{
+    color: #9a8866;
+    font-size: smaller;
+    
+  }
+
+
+
+
+
+  /****end-creditContainer****/
 
 
 
@@ -773,6 +944,7 @@ main{
     padding-right: 1%;
     word-wrap: break-word;
   }
+  
 
   
 }

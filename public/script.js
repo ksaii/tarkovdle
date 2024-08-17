@@ -22,6 +22,24 @@ document.getElementById("searchBox").addEventListener("click",function (event){
   filterList();
 })
 
+
+let isOpen = false;
+document.getElementById("siteInfo").addEventListener("click", function(event){
+  
+  if(isOpen){
+    document.querySelector(".creditContainer p").style.display = "none";
+    isOpen = false;
+  }else{
+    document.querySelector(".creditContainer p").style.display = "flex";
+    isOpen = true;
+  }
+
+} )
+
+document.getElementById("gitInfo").addEventListener("click", function(event){
+  window.open('https://github.com/ksaii', '_blank');
+} )
+
 document.getElementById("reset").addEventListener("click",function (event) {
   clearAll=true;
   handleBeforeUnload();
@@ -182,6 +200,7 @@ function compareHints() {
   img.alt = "Weapon img";
   weaponImage.appendChild(img);
   weaponImage.id = "imageBox";
+  weaponImage.title = (`${verifiedWeapon.name}`);
   details.appendChild(weaponImage);
 
 
@@ -363,7 +382,7 @@ function compareHints() {
     detailsHTML: details.innerHTML
   });
   
-
+  const tutorialContainer = document.getElementsByClassName("tutorialContainer");
     // Trigger the transition
     setTimeout(() => {
       document.querySelectorAll('#correctMatch').forEach((div, index) => {
@@ -380,6 +399,7 @@ function compareHints() {
       
       
       hintDetailContainer.classList.add('visible');
+      tutorialContainer[0].style.display = "flex";
     }, 100);
 
     
@@ -445,6 +465,8 @@ function correctPop(win) {
   if (win) {
     console.log("correct pop called");
     savedBool = true;
+    const searchBar = document.getElementsByClassName("autocomplete-container");
+    searchBar[0].style.display = "none";
     document.getElementById("popup").innerText = "You finished";
     document.getElementById("result").innerText = "Correct! You guessed the daily weapon.";
     document.getElementById("winHolder").style.display = "flex";
@@ -457,7 +479,7 @@ function correctPop(win) {
     correctIcon.alt = "Correct Weapon Icon";
     document.getElementById("correctImage").appendChild(correctIcon);
 
-    document.getElementById("attempts").innerHTML = (`Total Attempts: ${guessCount}`);
+    document.getElementById("attempts").innerHTML = (`It took you took ${guessCount} Attempts!`);
     updateCountdown();  
     numWinners();
     saveState();
@@ -627,7 +649,8 @@ function updateCountdown() {
   const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-  document.getElementById('countdown').innerHTML =
+  document.getElementById('countdown').innerHTML = 
+      'New Weapon in: \n' +
       ('0' + hours).slice(-2) + ':' +
       ('0' + minutes).slice(-2) + ':' +
       ('0' + seconds).slice(-2);
@@ -658,12 +681,16 @@ let guessesArray = [];
 function loadState() {
   const state = localStorage.getItem('pageState');
   const hintDetailContainer = document.querySelector('.hintDetailContainer');
+  const tutorialContainer = document.getElementsByClassName("tutorialContainer");
+
+
   if (state) {
   
     const parsedState = JSON.parse(state);
     firstGuess = parsedState.firstG;
     if(!firstGuess){
       hintDetailContainer.classList.add('visible');
+      tutorialContainer[0].style.display = "flex";
     }
     savedBool = parsedState.stateBool;
     
