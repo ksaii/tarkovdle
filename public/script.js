@@ -40,10 +40,10 @@ document.getElementById("gitInfo").addEventListener("click", function(event){
   window.open('https://github.com/ksaii', '_blank');
 } )
 
-document.getElementById("reset").addEventListener("click",function (event) {
+/*document.getElementById("reset").addEventListener("click",function (event) {
   clearAll=true;
   handleBeforeUnload();
-})
+})*/
 var clearAll = false;
 
 // Optionally, add event listener to close the dropdown when clicking outside
