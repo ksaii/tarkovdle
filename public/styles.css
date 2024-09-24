@@ -276,6 +276,13 @@ main{
     transform: rotate(180deg);
 
   }
+
+  .nameHint {
+    margin: 20px;
+  }
+  #textHint{
+    font-size: large;
+  }
   /********end-locked-hints*****/
   
 

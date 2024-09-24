@@ -40,11 +40,11 @@ document.getElementById("gitInfo").addEventListener("click", function(event){
   window.open('https://github.com/ksaii', '_blank');
 } )
 
-/*document.getElementById("reset").addEventListener("click",function (event) {
+document.getElementById("reset").addEventListener("click",function (event) {
   clearAll=true;
   handleBeforeUnload();
 })
-var clearAll = false;*/
+var clearAll = false;
 
 // Optionally, add event listener to close the dropdown when clicking outside
 document.addEventListener("click", function (event) {
@@ -516,15 +516,20 @@ document.getElementById("hintOne").addEventListener("click", function () {
 
     let audioHint = document.getElementsByClassName("audioHint");
     let imageHint = document.getElementsByClassName("iconHint");
+    let nameHint = document.getElementsByClassName("nameHint");
 
-    if(hintShow[0]===true){
+    if(hintHide[0]===true){
     imageHint[0].style.display = "none";
-    hintShow[1] = true;
+    hintHide[1] = true;
+
+    nameHint[0].style.display = "none";
+    hintHide[2] = true;
+
     audioHint[0].style.display = "flex";
-    hintShow[0] = false;
+    hintHide[0] = false;
     }else{
     audioHint[0].style.display = "none";
-    hintShow[0] = true;
+    hintHide[0] = true;
   }
 }
   });
@@ -551,17 +556,22 @@ document.getElementById("hintTwo").addEventListener("click",function() {
 
   let audioHint = document.getElementsByClassName("audioHint");
   let imageHint = document.getElementsByClassName("iconHint");
+      let nameHint = document.getElementsByClassName("nameHint");
 
 
-  if(hintShow[1]===true){
-    audioHint[0].style.display = "none";
-    hintShow[0] = true;
-    
+
+  if(hintHide[1]===true){
     imageHint[0].style.display = "flex";
-    hintShow[1] = false;
+    hintHide[1] = false;
+
+    nameHint[0].style.display = "none";
+    hintHide[2] = true;
+
+    audioHint[0].style.display = "none";
+    hintHide[0] = true;
     }else{
     imageHint[0].style.display = "none";
-    hintShow[1] = true;
+    hintHide[1] = true;
   }
 }
 })
@@ -581,25 +591,30 @@ document.getElementById("hintThree").addEventListener("click",function() {
   console.log("h3 clicked");
 
 
-  const hintImg = document.getElementById("hintImage");
+  const textContent = document.getElementById("textHint");
 
-  console.log(correctWeapon.image);
+  console.log(correctWeapon.name);
 
-  hintImg.src = correctWeapon.image;
+  textContent.innerText = correctWeapon.name;
 
   let audioHint = document.getElementsByClassName("audioHint");
   let imageHint = document.getElementsByClassName("iconHint");
+  let nameHint = document.getElementsByClassName("nameHint");
+
    
 
-  if(hintShow[1]===true){
-    audioHint[0].style.display = "none";
-    hintShow[0] = true;
-    
-    imageHint[0].style.display = "flex";
-    hintShow[1] = false;
-    }else{
+  if(hintHide[2]===true){
     imageHint[0].style.display = "none";
-    hintShow[1] = true;
+    hintHide[1] = true;
+
+    nameHint[0].style.display = "flex";
+    hintHide[2] = false;
+
+    audioHint[0].style.display = "none";
+    hintHide[0] = true;
+    }else{
+    nameHint[0].style.display = "none";
+    hintHide[2] = true;
   }
 }
 })
@@ -623,7 +638,7 @@ function revealHintThree() {
 
 
 
-let hintShow = [true,true,true];
+let hintHide = [true,true,true];
 
 let guessCount = 0;
 

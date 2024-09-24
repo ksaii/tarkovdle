@@ -30,7 +30,12 @@ console.log(`Daily weapon: ${holder}`);
 // Endpoint to get daily weapon attributes
 app.get('/api/daily-weapon', (req, res) => {
   const { name, ...attributes } = dailyWeapon;
-  res.json(attributes);
+  const modifiedName = name.slice(0, 2) + '. . .';
+
+  res.json({
+    name: modifiedName,
+    ...attributes
+  });
 });
 
 // Endpoint to get all weapon names for autocomplete

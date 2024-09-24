@@ -503,7 +503,7 @@
     "weight": 3.951 ,
     "fire_rate": 700,
     "image": "https://assets.tarkov.dev/5b439b5686f77428bd137424-icon.webp",
-    "sound": "sounds/DS_Arms_SA-58.mp3"
+    "sound": "sounds/SA-58.mp3"
   },
   {
     "name": "RSASS",
