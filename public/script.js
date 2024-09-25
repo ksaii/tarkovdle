@@ -75,7 +75,7 @@ function handleSubmit() {
     document.getElementById("result").innerText = "";
     clearInput();
   } else {
-    fetch(`https://tarkovdle-4168bd824afb.herokuapp.com/api/validate-guess?guess=${guess}`)
+    fetch(`http://localhost:3000/api/validate-guess?guess=${guess}`)
       .then((response) => response.json())
       .then((data) => {
         document.getElementById("result").innerText = data.message;
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
   blurHints();
  
 
-  fetch("https://tarkovdle-4168bd824afb.herokuapp.com/api/weapon-data")
+  fetch("http://localhost:3000/api/weapon-data")
     .then((response) => response.json())
     .then((data) => {
       if (weapons.length === 0) {
@@ -169,7 +169,7 @@ function populateDropdown() {
 
 let correctWeapon = [];
 
-fetch("https://tarkovdle-4168bd824afb.herokuapp.com/api/daily-weapon")
+fetch("http://localhost:3000/api/daily-weapon")
   .then((response) => response.json())
   .then((data) => {
     correctWeapon = data;
@@ -765,7 +765,7 @@ function clearLocalStorage() {
 async function numWinners() {
   try {
     // Fetch data from the server
-    const response = await fetch('https://tarkovdle-4168bd824afb.herokuapp.com/api/site-data');
+    const response = await fetch('http://localhost:3000/api/site-data');
 
     // Check if the response is ok (status in the range 200-299)
     if (!response.ok) {
