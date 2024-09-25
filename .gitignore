@@ -1,2 +1,4 @@
 # Ignore .mp3 files
 *.mp3
+
+public/sounds/
