@@ -11,6 +11,8 @@ app.use(cors());
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
+
+
 // Load and read Site Stats
 const statsFilePath = path.join(__dirname, '../site-stats.json');
 const stats = JSON.parse(fs.readFileSync(statsFilePath, 'utf-8'));

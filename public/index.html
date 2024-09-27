@@ -11,7 +11,7 @@
   <main>
     <div class="header-container">
       <h1 id = "title">Tarkovdle</h1>
-      
+      <button id ="reset">Reset Local</button>
       
     </div>
 
@@ -80,7 +80,7 @@
 
       <div class="input-container">
       <div class="input-box-wrapper">
-      <input placeholder="Type Gun Name..." type="text" id="searchBox" autocomplete="off" onkeyup="filterList()">
+      <input placeholder="Type Gun Name..." type="text" id="searchBox" autocomplete="off" >
       </div> 
       <div class = "input-button-wrapper" id = "submitGuess">
         <img src ="images/login.png" alt="login">
@@ -178,7 +178,12 @@
 
 </main>
   
-  <script src="script.js"></script>
+<script type="module" src="js/utility.js"></script>
+<script type="module" src="js/api.js"></script>
+<script type="module" src="js/buttonEvents.js"></script>
+<script type="module" src="js/main.js"></script>
+<script type="module" src="js/script.js"></script>
+
 </body>
 </html>
 

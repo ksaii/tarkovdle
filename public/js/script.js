@@ -1,4 +1,13 @@
-function filterList() {
+//script.js
+
+import { 
+  initializeEventListeners
+
+ } from './buttonEvents.js';
+
+initializeEventListeners(); // Delete this and above to work also delete type module to work. But to fix forever remove one of the arrayEquals functions 
+
+export function filterList() {
   let input = document.getElementById("searchBox");
   let filter = input.value.toLowerCase();
   let ulContainer = document.getElementsByClassName("weapon-list-container");
@@ -18,32 +27,19 @@ function filterList() {
   }
 }
 
-document.getElementById("searchBox").addEventListener("click",function (event){
-  filterList();
-})
 
 
-let isOpen = false;
-document.getElementById("siteInfo").addEventListener("click", function(event){
-  
-  if(isOpen){
-    document.querySelector(".creditContainer p").style.display = "none";
-    isOpen = false;
-  }else{
-    document.querySelector(".creditContainer p").style.display = "flex";
-    isOpen = true;
-  }
 
-} )
 
-document.getElementById("gitInfo").addEventListener("click", function(event){
-  window.open('https://github.com/ksaii', '_blank');
-} )
 
-/*document.getElementById("reset").addEventListener("click",function (event) {
+
+
+
+
+document.getElementById("reset").addEventListener("click",function (event) {
   clearAll=true;
   handleBeforeUnload();
-})*/
+})
 var clearAll = false;
 
 // Optionally, add event listener to close the dropdown when clicking outside
@@ -103,7 +99,7 @@ let weapons = [];
 
 document.addEventListener("DOMContentLoaded", () => {
 
-
+  
   
   loadState();
   loadWeapons();
@@ -174,14 +170,7 @@ fetch("http://localhost:3000/api/daily-weapon")
   .then((data) => {
     correctWeapon = data;
 
-    const hintsDiv = document.getElementById("hints");
-    hintsDiv.innerHTML = `
-    <p>Ammo Types: ${data.ammo_type}</p>
-    <p>Price Range: ${data.price_range}</p>
-    <p>Barter Level: ${data.barter_level}</p>
-    <p>Type: ${data.type}</p>
-    <p>Firing Modes: ${data.firing_modes}</p>
-  `;
+
   })
   .catch((error) => console.error("Error fetching daily weapon:", error));
 
@@ -408,19 +397,7 @@ function compareHints() {
 
 }
 
-function arraysEqual(arr1, arr2) {
-  if (arr1.length !== arr2.length) {
-    return false;
-  }
 
-  for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i] !== arr2[i]) {
-      return false;
-    }
-  }
-
-  return true;
-}
 
 function removeWeaponFromDropdown(weaponName) {
   const ul = document.getElementById("weaponList");
@@ -510,6 +487,7 @@ document.getElementById("hintOne").addEventListener("click", function () {
 
     const audioElement = document.getElementById("audioIn");
 
+    audioElement.add.src
     audioElement.src = newAudioPath;
 
     audioElement.load();

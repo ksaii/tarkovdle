@@ -1,6 +1,9 @@
-1.Finish and smooth out the post guess hints
-
-2. Add in a simple audio guess after a certain amount of guesses 
-
-3. Smooth out the html css visuals ie. (move submit button, fix colors, align all items, add custom font)
-
+1. Add Loading Screen when loading page 
+2. Add Arrow Up Down and Partial for guess boxes
+3. Add String above Answer Key Called "Answer Key"
+4. Fix Post Win Timer to Be CST Only
+5. Fix Win Count after winning to show your win (so you dont have to refresh page)
+6. Organize script.js into multiply modular files 
+7. Organize style.css 
+8.Make it to where when the daily timer resets the page also resets the local cache AND 
+ also resets the daily weapon to something new
