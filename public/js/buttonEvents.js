@@ -1,8 +1,10 @@
 import { setupButtonClickListener } from './utility.js';
+import { filterList } from './filter.js';
 import { 
-    filterList,
-    
- } from './script.js';
+    handleBeforeUnload, //Function for handling page unload 
+    state,   //Bool Variables to determine whether to clear local storage when refreshing or not
+    handleSubmit, //Function for handling submitted textbox info
+} from './script.js'
 
 /*Button Event Logic*/
 
@@ -44,8 +46,44 @@ export function initializeEventListeners() {
     }else{
         console.error("gitinfo element not found");
     }
- 
+    
+    //Reset Button Temporary
+    const resetButton = document.getElementById("reset");
+    
+        if(resetButton){    
+            resetButton.addEventListener("click",function(){
+            state.localClear = true;
+            handleBeforeUnload();    
+            location.reload();
+            })      
+        }else{
+            console.error("reset element not found");
+        }
 
+    //Dropdown event listener to close dropdown when clicking outside of it
+    document.addEventListener("click", function (event) {
+    let ul = document.getElementById("weaponList");
+    let ulContainer = document.getElementsByClassName("weapon-list-container");
+    let input = document.getElementById("searchBox");
+    if (!input.contains(event.target) && !ul.contains(event.target)) {
+      ul.style.display = "none";
+    }
+    });
+      
+      
+
+    //Submit Button Listener
+    document.getElementById("submitGuess").addEventListener("click", handleSubmit);
+
+    //Searchbox Enter KeyListener 
+    document.getElementById("searchBox").addEventListener("keydown", function(event){
+        if(event.key === "Enter"){
+          handleSubmit();
+          console.log("entered");
+        }
+      })
+
+    
     
     
     

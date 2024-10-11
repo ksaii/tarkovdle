@@ -4,28 +4,15 @@ import {
   initializeEventListeners
 
  } from './buttonEvents.js';
+import {
+  Api
+} from './api.js'
 
 initializeEventListeners(); // Delete this and above to work also delete type module to work. But to fix forever remove one of the arrayEquals functions 
 
-export function filterList() {
-  let input = document.getElementById("searchBox");
-  let filter = input.value.toLowerCase();
-  let ulContainer = document.getElementsByClassName("weapon-list-container");
-  let ul = document.getElementById("weaponList");
-  let li = ul.getElementsByTagName("li");
+let guessedWeapon = []; // Array for storing JSON info of Users Guessed Weapon
 
-  // Show the list if there's input
-  ul.style.display = filter ? "flex" : "none";
-
-  for (let i = 0; i < li.length; i++) {
-    let text = li[i].textContent || li[i].innerText;
-    if (text.toLowerCase().indexOf(filter) > -1) {
-      li[i].style.display = ""; 
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-}
+let weapons = []; // Array of weapon objects(This only contains the names and images of every weapon)
 
 
 
@@ -36,50 +23,26 @@ export function filterList() {
 
 
 
-document.getElementById("reset").addEventListener("click",function (event) {
-  clearAll=true;
-  handleBeforeUnload();
-})
-var clearAll = false;
 
-// Optionally, add event listener to close the dropdown when clicking outside
-document.addEventListener("click", function (event) {
-  let ul = document.getElementById("weaponList");
-  let ulContainer = document.getElementsByClassName("weapon-list-container");
-  let input = document.getElementById("searchBox");
-  if (!input.contains(event.target) && !ul.contains(event.target)) {
-    ul.style.display = "none";
-  }
-});
 
-document.getElementById("submitGuess").addEventListener("click", handleSubmit);
-
-document.getElementById("searchBox").addEventListener("keydown", function(event){
-  if(event.key === "Enter"){
-    handleSubmit();
-    console.log("entered");
-  }
-})
-
-let verifiedWeapon = [];
 
 // Function to handle submitting a guess
-function handleSubmit() {
+export function handleSubmit() {
   let guess = document.getElementById("searchBox").value.toUpperCase();
+  
   if (!checkWeaponReal(guess)) {
     console.log("Not a real weapon:", guess);
     document.getElementById("result").innerText = "";
     clearInput();
   } else {
-    fetch(`http://localhost:3000/api/validate-guess?guess=${guess}`)
-      .then((response) => response.json())
-      .then((data) => {
-        document.getElementById("result").innerText = data.message;
-        firstGuess = false;
-        verifiedWeapon = data.filteredGuess;
-        console.log("VArray:", verifiedWeapon);
-        compareHints();
-        removeWeaponFromDropdown(guess);
+    // Call the API to validate the guess
+    Api.validateGuess(guess)  // Pass the guess to the API function
+      .then((data) => {  // Handle the resolved promise
+        document.getElementById("result").innerText = data.message; //Shows user a message if their guess was true or false
+        firstGuess = false; //First bool determines whether it was their first guess on the page so it will save local from now on
+        guessedWeapon = data.filteredGuess; // Passes json Users guessed weapon object to guessedWeapon Variable
+        compareHints(); // Calls compare Hints to generate hintList Divs
+        removeWeaponFromDropdown(guess); 
         correctPop(data.correct);
         clearInput();
         guessCountAdd();
@@ -88,47 +51,42 @@ function handleSubmit() {
         // Save game state
         saveState();
       })
-      .catch((error) => console.error("Error validating guess:", error));
+      .catch((error) => console.error("Error validating guess: ", error));  // Catch any errors
   }
 }
 
 
-// Array of weapon objects
-let weapons = [];
 
 
+//Event Listener for when the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
-
-  
-  
   loadState();
   loadWeapons();
   blurHints();
  
-
-  fetch("http://localhost:3000/api/weapon-data")
-    .then((response) => response.json())
+    Api.fetchWeaponData()
     .then((data) => {
       if (weapons.length === 0) {
         weapons = data;
         saveWeapons();
       }
-      
-      
+
       populateDropdown();
+
     })
-    .catch((error) => console.error("Error fetching weapon names:", error));
+    .catch((error) => console.error("Error fetching weapon names/images:", error));
   
 });
 
-
-function loadWeapons() {
+//Function to load weapons(images,names) into the weapons[] object array 
+function loadWeapons() { 
   const storedWeapons = localStorage.getItem('weapons');
-  if (storedWeapons) {
+  if (storedWeapons) { // Checks if stored weapons isnt null then parses the json and puts it into a object array
     weapons = JSON.parse(storedWeapons);
   }
 }
 
+//Function to save 
 function saveWeapons() {
   localStorage.setItem('weapons', JSON.stringify(weapons));
 }
@@ -185,11 +143,11 @@ function compareHints() {
   const details = document.createElement("div");
 
   const weaponImage = document.createElement("div");
-  img.src = verifiedWeapon.image;
+  img.src = guessedWeapon.image;
   img.alt = "Weapon img";
   weaponImage.appendChild(img);
   weaponImage.id = "imageBox";
-  weaponImage.title = (`${verifiedWeapon.name}`);
+  weaponImage.title = (`${guessedWeapon.name}`);
   details.appendChild(weaponImage);
 
 
@@ -200,11 +158,11 @@ function compareHints() {
 
   //weapon ammo_type divs
 
-  if (correctWeapon.ammo_type !== verifiedWeapon.ammo_type) {
+  if (correctWeapon.ammo_type !== guessedWeapon.ammo_type) {
     const ammoType = document.createElement("div");
     ammoType.id = "nullMatch";
     ammoType.classList.add()
-    ammoType.textContent = `${verifiedWeapon.ammo_type}`;
+    ammoType.textContent = `${guessedWeapon.ammo_type}`;
     ammoType.style.backgroundColor = "red";
     details.appendChild(ammoType);
   } else {
@@ -218,10 +176,10 @@ function compareHints() {
 
    //weapon type divs
 
-   if (correctWeapon.type !== verifiedWeapon.type) {
+   if (correctWeapon.type !== guessedWeapon.type) {
     const type = document.createElement("div");
     type.id = "nullMatch";
-    type.textContent = `${verifiedWeapon.type}`;
+    type.textContent = `${guessedWeapon.type}`;
     type.style.backgroundColor = "red";
     details.appendChild(type);
   } else {
@@ -235,19 +193,19 @@ function compareHints() {
 
   //weapon price_range divs
 
-  if (correctWeapon.price_range !== verifiedWeapon.price_range) {
+  if (correctWeapon.price_range !== guessedWeapon.price_range) {
 
-    if(correctWeapon.price_range > verifiedWeapon.price_range){
+    if(correctWeapon.price_range > guessedWeapon.price_range){
     const priceRange = document.createElement("div");
     priceRange.id = "nullMatch";
-    priceRange.textContent = `${verifiedWeapon.price_range}₽`;
+    priceRange.textContent = `${guessedWeapon.price_range}₽`;
 
     priceRange.style.backgroundColor = "red";
     details.appendChild(priceRange);
     }else{
     const priceRange = document.createElement("div");
     priceRange.id = "nullMatch";
-    priceRange.textContent = `${verifiedWeapon.price_range}₽`;
+    priceRange.textContent = `${guessedWeapon.price_range}₽`;
 
     priceRange.style.backgroundColor = "red";
     details.appendChild(priceRange);
@@ -268,19 +226,19 @@ function compareHints() {
 
   //weapon weight divs
 
-  if (correctWeapon.weight !== verifiedWeapon.weight) {
+  if (correctWeapon.weight !== guessedWeapon.weight) {
 
-    if(correctWeapon.weight > verifiedWeapon.weight){
+    if(correctWeapon.weight > guessedWeapon.weight){
     const weaponWeight = document.createElement("div");
     weaponWeight.id = "nullMatch";
-    weaponWeight.textContent = `${verifiedWeapon.weight}kg`;
+    weaponWeight.textContent = `${guessedWeapon.weight}kg`;
 
     weaponWeight.style.backgroundColor = "red";
     details.appendChild(weaponWeight);
     }else{
     const weaponWeight = document.createElement("div");
     weaponWeight.id = "nullMatch";
-    weaponWeight.textContent = `${verifiedWeapon.weight}kg`;
+    weaponWeight.textContent = `${guessedWeapon.weight}kg`;
 
     weaponWeight.style.backgroundColor = "red";
     details.appendChild(weaponWeight);
@@ -297,19 +255,19 @@ function compareHints() {
 
     //weapon fire_rate divs
 
-    if (correctWeapon.fire_rate !== verifiedWeapon.fire_rate) {
+    if (correctWeapon.fire_rate !== guessedWeapon.fire_rate) {
 
-      if(correctWeapon.fire_rate > verifiedWeapon.fire_rate){
+      if(correctWeapon.fire_rate > guessedWeapon.fire_rate){
       const weaponFireRate = document.createElement("div");
       weaponFireRate.id = "nullMatch";
-      weaponFireRate.textContent = `${verifiedWeapon.fire_rate}RPM`;
+      weaponFireRate.textContent = `${guessedWeapon.fire_rate}RPM`;
   
       weaponFireRate.style.backgroundColor = "red";
       details.appendChild(weaponFireRate);
       }else{
       const weaponFireRate = document.createElement("div");
       weaponFireRate.id = "nullMatch";
-      weaponFireRate.textContent = `${verifiedWeapon.fire_rate}RPM`;
+      weaponFireRate.textContent = `${guessedWeapon.fire_rate}RPM`;
   
       weaponFireRate.style.backgroundColor = "red";
       details.appendChild(weaponFireRate);
@@ -327,10 +285,10 @@ function compareHints() {
 
   //weapon fire_modes divs
 
-  if (!arraysEqual(correctWeapon.firing_modes, verifiedWeapon.firing_modes)) {
+  if (!arraysEqual(correctWeapon.firing_modes, guessedWeapon.firing_modes)) {
     const fmodes = document.createElement("div");
     fmodes.id = "nullMatch";
-    fmodes.textContent = `${verifiedWeapon.firing_modes.join(
+    fmodes.textContent = `${guessedWeapon.firing_modes.join(
       ", "
     )}`;
     fmodes.style.backgroundColor = "red";
@@ -351,7 +309,7 @@ function compareHints() {
 
 
   console.log("CorWeapon Frate ",correctWeapon.fire_rate);
-  console.log("Vweapon Frate ",verifiedWeapon.fire_rate);
+  console.log("Vweapon Frate ",guessedWeapon.fire_rate);
 
 
 
@@ -367,7 +325,7 @@ function compareHints() {
   
 
   guessesArray.push({
-    imgSrc: verifiedWeapon.image,
+    imgSrc: guessedWeapon.image,
     detailsHTML: details.innerHTML
   });
   
@@ -398,7 +356,7 @@ function compareHints() {
 }
 
 
-
+//This Function Removes guessed Weapon from dropdown to prevent user from entering it twice
 function removeWeaponFromDropdown(weaponName) {
   const ul = document.getElementById("weaponList");
   const li = ul.getElementsByTagName("li");
@@ -438,6 +396,7 @@ function checkWeaponReal(weaponName) {
 
 let savedBool = false;
 
+//This function executes when user guessed Correct weapon and ends game till reset
 function correctPop(win) {
   if (win) {
     console.log("correct pop called");
@@ -463,6 +422,7 @@ function correctPop(win) {
   }
 }
 
+//Simple Helper Function that clears the searchbox input for the user after each guess
 function clearInput() {
   var clearBox = document.getElementById("searchBox");
   clearBox.value = "";
@@ -487,7 +447,6 @@ document.getElementById("hintOne").addEventListener("click", function () {
 
     const audioElement = document.getElementById("audioIn");
 
-    audioElement.add.src
     audioElement.src = newAudioPath;
 
     audioElement.load();
@@ -616,10 +575,11 @@ function revealHintThree() {
 
 
 
-let hintHide = [true,true,true];
+let hintHide = [true,true,true]; //Array that stores 3 bools that determine if a Hint div should be visible or not (True means hide div,False Means revealed)
 
-let guessCount = 0;
+let guessCount = 0; //Variable stores amount of guesses so far 
 
+//Simple Helper Function that tracks Increments amount of guesses so far
 function guessCountAdd() {
   guessCount++;
 
@@ -653,10 +613,11 @@ function updateCountdown() {
 
 let firstGuess = true;
 
+//This function is called whenever the state of the page needs to be saved in the local storage
 function saveState() {
   const state = {
     guessCount: guessCount,
-    verifiedWeapon: verifiedWeapon,
+    guessedWeapon: guessedWeapon,
     correctWeapon: correctWeapon,
     guesses: guessesArray,
     stateBool: savedBool,
@@ -670,7 +631,7 @@ let guessesArray = [];
 
 
 
-
+//This function is called whenever the DOM is loaded to set the page to the state the user left it in
 function loadState() {
   const state = localStorage.getItem('pageState');
   const hintDetailContainer = document.querySelector('.hintDetailContainer');
@@ -680,15 +641,16 @@ function loadState() {
   if (state) {
   
     const parsedState = JSON.parse(state);
-    firstGuess = parsedState.firstG;
-    if(!firstGuess){
+    firstGuess = parsedState.firstG; //Parses firstG which is the locally saved bool to determine if the user has guessed already
+    
+    if(!firstGuess){ // 
       hintDetailContainer.classList.add('visible');
       tutorialContainer[0].style.display = "flex";
     }
     savedBool = parsedState.stateBool;
     
     guessCount = parsedState.guessCount;
-    verifiedWeapon = parsedState.verifiedWeapon;
+    guessedWeapon = parsedState.guessedWeapon;
     correctWeapon = parsedState.correctWeapon;
     guessesArray = parsedState.guesses;
 
@@ -720,12 +682,20 @@ function loadState() {
 }
 
 
-window.addEventListener('beforeunload', handleBeforeUnload);
+
+
+window.addEventListener('beforeunload', handleBeforeUnload); //Event Listener to Handle Page unloading
+
+// This object a bool that dicatates if the page will clear local storage on refresh
+export const state = {
+  localClear: false,
+} 
 
 // Function to handle state save and clear local storage on page unload
-function handleBeforeUnload() {
+export function handleBeforeUnload() {
   saveState();
-  if(clearAll){
+  console.log("Saving State");
+  if(state.localClear){
     clearLocalStorage();
   }
   
@@ -733,8 +703,10 @@ function handleBeforeUnload() {
 // Event listeners for search box to save state on input
 document.getElementById("searchBox").addEventListener("input", saveState);
 
-function clearLocalStorage() {
+//Function when called clears Local Storage
+export function clearLocalStorage() {
   localStorage.clear();
+  console.log("Clearing Local Storage");
 }
 
 
@@ -799,10 +771,12 @@ document.getElementById('volumeSlider').addEventListener('input', function() {
   audio.volume = this.value;
 });
 
-const hintsReqArray =[5,7,9] // This Array Contains 3 ints which determine the minimum attempts for the hints 
+const hintsReqArray =[5,7,9] // This Array Contains 3 ints which determine the minimum attempts needed to unlock the hints 
 
-
+//Function that Updates "Attempts required till Guess is unlocked" and also reveals the Guesses after x amount of Attempts
 function revealHints (){
+
+  //this if if block updates string telling user how many attempts are needed to unlock hint 
   if (guessCount <= hintsReqArray[0]) {
     let aTxt = document.querySelector(".hintButtons #hintOne p");
     aTxt.textContent = `Audio Hint in \n${hintsReqArray[0]-guessCount} attempts`;
@@ -814,7 +788,7 @@ function revealHints (){
     cTxt.textContent = `Name Hint in \n${hintsReqArray[2]-guessCount} attempts`;
   }
 
-
+  //if if block reveals the hintButtons after x attempts
   if (guessCount >= 2) {
     revealHintButtons();
   }if (guessCount >= hintsReqArray[0]) {
@@ -826,12 +800,13 @@ function revealHints (){
   }
 }
 
+//Function that blurs the hints 
 function blurHints(){
   let hintOne = document.querySelector(".hintButtons #hintOne img");
   let hintTwo = document.querySelector(".hintButtons #hintTwo img");
   let hintThree = document.querySelector(".hintButtons #hintThree img");
 
-
+  //This if if block uses guessCount to track what guesses to blur if any so when the page refreshes the user keep their progress
   if (guessCount <  hintsReqArray[0]) {
     hintOne.classList.add("blur");
   }
