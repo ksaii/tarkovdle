@@ -4,22 +4,39 @@ import {
   initializeEventListeners
 
  } from './buttonEvents.js';
+
 import {
   Api
 } from './api.js'
+
+import{
+  weaponFeaturesComparison
+} from './weaponComparison.js'
+
+import{
+  revealHints,
+  blurHints
+} from './hints.js'
+
+import{
+  checkWeaponReal,
+  clearInput   
+} from './utility.js'
+
 
 initializeEventListeners(); // Delete this and above to work also delete type module to work. But to fix forever remove one of the arrayEquals functions 
 
 let guessedWeapon = []; // Array for storing JSON info of Users Guessed Weapon
 
-let weapons = []; // Array of weapon objects(This only contains the names and images of every weapon)
+let currentWeaponPool = []; // Array of weapon objects(This only contains the names and images of every weapon)
 
+export let correctWeapon = []; // This array contains the object of the Correct Daily Weapon
 
+let winnerStateBool = false; // This Bool when false allows the user to keep playing the game until they win. When they win its set to true and the page is locked till daily reset
 
+export let guessesArray = []; // This contains an array of objects which contain the image and html/css for the weaponComparison divs tiles
 
-
-
-
+export let guessCount = 0; //Variable stores amount of guesses user has made so far today 
 
 
 
@@ -39,13 +56,13 @@ export function handleSubmit() {
     Api.validateGuess(guess)  // Pass the guess to the API function
       .then((data) => {  // Handle the resolved promise
         document.getElementById("result").innerText = data.message; //Shows user a message if their guess was true or false
-        firstGuess = false; //First bool determines whether it was their first guess on the page so it will save local from now on
+        hasMadeFirstGuess = false; //First bool determines whether it was their first guess on the page so it will save local from now on
         guessedWeapon = data.filteredGuess; // Passes json Users guessed weapon object to guessedWeapon Variable
-        compareHints(); // Calls compare Hints to generate hintList Divs
+        weaponFeaturesComparison(correctWeapon, guessedWeapon); // Calls compare Hints to generate hintList Divs
         removeWeaponFromDropdown(guess); 
         correctPop(data.correct);
         clearInput();
-        guessCountAdd();
+        guessCount++;
         revealHints();
 
         // Save game state
@@ -61,14 +78,21 @@ export function handleSubmit() {
 //Event Listener for when the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
-  loadWeapons();
   blurHints();
- 
+  initializeAudioHint();
+  Api.fetchCorrectWeapon()
+  .then((data) => {
+    correctWeapon = data;
+    console.log("Fetching Correct Weapon");
+  }).catch((error) => {
+    console.error("Error fetching daily weapon:", error);
+  })
+
     Api.fetchWeaponData()
     .then((data) => {
-      if (weapons.length === 0) {
-        weapons = data;
-        saveWeapons();
+      if (currentWeaponPool.length === 0) {
+        currentWeaponPool = data;
+        saveState();
       }
 
       populateDropdown();
@@ -78,24 +102,13 @@ document.addEventListener("DOMContentLoaded", () => {
   
 });
 
-//Function to load weapons(images,names) into the weapons[] object array 
-function loadWeapons() { 
-  const storedWeapons = localStorage.getItem('weapons');
-  if (storedWeapons) { // Checks if stored weapons isnt null then parses the json and puts it into a object array
-    weapons = JSON.parse(storedWeapons);
-  }
-}
 
-//Function to save 
-function saveWeapons() {
-  localStorage.setItem('weapons', JSON.stringify(weapons));
-}
 
 function populateDropdown() {
   const ul = document.getElementById("weaponList");
   ul.innerHTML = ""; // Clear existing list items
 
-  weapons.forEach((weapon) => {
+  currentWeaponPool.forEach((weapon) => {
     const li = document.createElement("li");
     const img = document.createElement("img");
 
@@ -121,239 +134,10 @@ function populateDropdown() {
 }
 
 
-let correctWeapon = [];
-
-fetch("http://localhost:3000/api/daily-weapon")
-  .then((response) => response.json())
-  .then((data) => {
-    correctWeapon = data;
-
-
-  })
-  .catch((error) => console.error("Error fetching daily weapon:", error));
-
-function compareHints() {
-  const ul = document.getElementById("hintList");
-
-  const li = document.createElement("li");
-  const img = document.createElement("img");
-  
-
-  const hintDetailContainer = document.querySelector('.hintDetailContainer');
-  const details = document.createElement("div");
-
-  const weaponImage = document.createElement("div");
-  img.src = guessedWeapon.image;
-  img.alt = "Weapon img";
-  weaponImage.appendChild(img);
-  weaponImage.id = "imageBox";
-  weaponImage.title = (`${guessedWeapon.name}`);
-  details.appendChild(weaponImage);
-
-
-  
-
-  // Compare hints
-
-
-  //weapon ammo_type divs
-
-  if (correctWeapon.ammo_type !== guessedWeapon.ammo_type) {
-    const ammoType = document.createElement("div");
-    ammoType.id = "nullMatch";
-    ammoType.classList.add()
-    ammoType.textContent = `${guessedWeapon.ammo_type}`;
-    ammoType.style.backgroundColor = "red";
-    details.appendChild(ammoType);
-  } else {
-    const ammoType = document.createElement("div");
-    ammoType.id = "correctMatch";
-    ammoType.textContent = `${correctWeapon.ammo_type}`;
-    ammoType.style.backgroundColor = "green";
-    details.appendChild(ammoType);
-  }
-
-
-   //weapon type divs
-
-   if (correctWeapon.type !== guessedWeapon.type) {
-    const type = document.createElement("div");
-    type.id = "nullMatch";
-    type.textContent = `${guessedWeapon.type}`;
-    type.style.backgroundColor = "red";
-    details.appendChild(type);
-  } else {
-    const type = document.createElement("div");
-    type.id = "correctMatch";
-    type.textContent = `${correctWeapon.type}`;
-    type.style.backgroundColor = "green";
-    details.appendChild(type);
-  }
-
-
-  //weapon price_range divs
-
-  if (correctWeapon.price_range !== guessedWeapon.price_range) {
-
-    if(correctWeapon.price_range > guessedWeapon.price_range){
-    const priceRange = document.createElement("div");
-    priceRange.id = "nullMatch";
-    priceRange.textContent = `${guessedWeapon.price_range}₽`;
-
-    priceRange.style.backgroundColor = "red";
-    details.appendChild(priceRange);
-    }else{
-    const priceRange = document.createElement("div");
-    priceRange.id = "nullMatch";
-    priceRange.textContent = `${guessedWeapon.price_range}₽`;
-
-    priceRange.style.backgroundColor = "red";
-    details.appendChild(priceRange);
-    }
-
-  } else {
-    const priceRange = document.createElement("div");
-    priceRange.id = "correctMatch";
-    priceRange.textContent = `${correctWeapon.price_range}₽`;
-    priceRange.style.backgroundColor = "green";
-    details.appendChild(priceRange);
-  }
-
-
-
- 
-
-
-  //weapon weight divs
-
-  if (correctWeapon.weight !== guessedWeapon.weight) {
-
-    if(correctWeapon.weight > guessedWeapon.weight){
-    const weaponWeight = document.createElement("div");
-    weaponWeight.id = "nullMatch";
-    weaponWeight.textContent = `${guessedWeapon.weight}kg`;
-
-    weaponWeight.style.backgroundColor = "red";
-    details.appendChild(weaponWeight);
-    }else{
-    const weaponWeight = document.createElement("div");
-    weaponWeight.id = "nullMatch";
-    weaponWeight.textContent = `${guessedWeapon.weight}kg`;
-
-    weaponWeight.style.backgroundColor = "red";
-    details.appendChild(weaponWeight);
-    }
-
-  } else {
-    const weaponWeight = document.createElement("div");
-    weaponWeight.id = "correctMatch";
-    weaponWeight.textContent = `${correctWeapon.weight}kg`;
-    weaponWeight.style.backgroundColor = "green";
-    details.appendChild(weaponWeight);
-  }
-
-
-    //weapon fire_rate divs
-
-    if (correctWeapon.fire_rate !== guessedWeapon.fire_rate) {
-
-      if(correctWeapon.fire_rate > guessedWeapon.fire_rate){
-      const weaponFireRate = document.createElement("div");
-      weaponFireRate.id = "nullMatch";
-      weaponFireRate.textContent = `${guessedWeapon.fire_rate}RPM`;
-  
-      weaponFireRate.style.backgroundColor = "red";
-      details.appendChild(weaponFireRate);
-      }else{
-      const weaponFireRate = document.createElement("div");
-      weaponFireRate.id = "nullMatch";
-      weaponFireRate.textContent = `${guessedWeapon.fire_rate}RPM`;
-  
-      weaponFireRate.style.backgroundColor = "red";
-      details.appendChild(weaponFireRate);
-      }
-
-    } else {
-      const weaponFireRate = document.createElement("div");
-      weaponFireRate.id = "correctMatch";
-      weaponFireRate.textContent = `${correctWeapon.fire_rate}RPM`;
-      weaponFireRate.style.backgroundColor = "green";
-      details.appendChild(weaponFireRate);
-    }
-
-
-
-  //weapon fire_modes divs
-
-  if (!arraysEqual(correctWeapon.firing_modes, guessedWeapon.firing_modes)) {
-    const fmodes = document.createElement("div");
-    fmodes.id = "nullMatch";
-    fmodes.textContent = `${guessedWeapon.firing_modes.join(
-      ", "
-    )}`;
-    fmodes.style.backgroundColor = "red";
-    details.appendChild(fmodes);
-  } else {
-    const fmodes = document.createElement("div");
-    fmodes.id = "correctMatch";
-    fmodes.textContent = `${correctWeapon.firing_modes.join(
-      ", "
-    )}`;
-    fmodes.style.backgroundColor = "green";
-    details.appendChild(fmodes);
-  }
 
 
 
 
-
-
-  console.log("CorWeapon Frate ",correctWeapon.fire_rate);
-  console.log("Vweapon Frate ",guessedWeapon.fire_rate);
-
-
-
-  // Add more comparisons for other details as needed
-
- 
-
-  li.appendChild(details);
-
-  
-
-  ul.appendChild(li);
-  
-
-  guessesArray.push({
-    imgSrc: guessedWeapon.image,
-    detailsHTML: details.innerHTML
-  });
-  
-  const tutorialContainer = document.getElementsByClassName("tutorialContainer");
-    // Trigger the transition
-    setTimeout(() => {
-      document.querySelectorAll('#correctMatch').forEach((div, index) => {
-        div.classList.add('correctMatch');
-      });
-      document.querySelectorAll('#nullMatch').forEach((div, index) => {
-        div.classList.add('nullMatch');
-      });
-       document.querySelectorAll('#imageBox').forEach((imageBox, index) => {
-        imageBox.classList.add('visible');;
-        saveState();
-      });
-  
-      
-      
-      hintDetailContainer.classList.add('visible');
-      tutorialContainer[0].style.display = "flex";
-    }, 100);
-
-    
-
-  saveState();
-
-}
 
 
 //This Function Removes guessed Weapon from dropdown to prevent user from entering it twice
@@ -368,39 +152,23 @@ function removeWeaponFromDropdown(weaponName) {
     if ((li[i].textContent.toUpperCase()).includes(weaponName.toUpperCase())) {
       ul.removeChild(li[i]);
       // Remove the weapon from the weapons array
-      weapons = weapons.filter(weapon => weapon.name.toUpperCase() !== weaponName.toUpperCase());
-      saveWeapons(); // Save the updated weapons array to localStorage
-      console.log("Array after removal: ", weapons);
+      currentWeaponPool = currentWeaponPool.filter(weapon => weapon.name.toUpperCase() !== weaponName.toUpperCase());
+      saveState(); // Save the updated weapons array to localStorage
+      console.log("Array after removal: ", currentWeaponPool);
       break;
     }
   }
 }
 
 
-function checkWeaponReal(weaponName) {
-  console.log("checking weapon valid");
-  const ul = document.getElementById("weaponList");
-  const li = ul.getElementsByTagName("li");
 
-  for (let i = 0; i < li.length; i++) {
-    console.log("li text content is: ", li[i]);
-    if (li[i].textContent.trim().toUpperCase()===(weaponName.toUpperCase())) {
-      console.log("weapon valid return true");
-      return true;
-      break;
-    }
-  }
-  console.log("weapon valid return false");
-  return false;
-}
 
-let savedBool = false;
 
 //This function executes when user guessed Correct weapon and ends game till reset
 function correctPop(win) {
   if (win) {
     console.log("correct pop called");
-    savedBool = true;
+    winnerStateBool = true;
     const searchBar = document.getElementsByClassName("autocomplete-container");
     searchBar[0].style.display = "none";
     document.getElementById("popup").innerText = "You finished";
@@ -422,173 +190,6 @@ function correctPop(win) {
   }
 }
 
-//Simple Helper Function that clears the searchbox input for the user after each guess
-function clearInput() {
-  var clearBox = document.getElementById("searchBox");
-  clearBox.value = "";
-}
-
-function revealHintButtons() {
-  var welcomeTitle = document.getElementsByClassName("welcometitle");
-  welcomeTitle[0].style.display = "none";
-  var hintButtons = document.getElementsByClassName("hintButtons");
-  
-  hintButtons[0].style.display = "flex";
-  setTimeout(() => {
-    hintButtons[0].classList.add('transition-effect');
-  }, 100);
-}
-
-document.getElementById("hintOne").addEventListener("click", function () {
-  if(guessCount >= hintsReqArray[0]){
-    console.log("h1 clicked");
-
-    const newAudioPath = correctWeapon.sound;
-
-    const audioElement = document.getElementById("audioIn");
-
-    audioElement.src = newAudioPath;
-
-    audioElement.load();
-
-    let audioHint = document.getElementsByClassName("audioHint");
-    let imageHint = document.getElementsByClassName("iconHint");
-    let nameHint = document.getElementsByClassName("nameHint");
-
-    if(hintHide[0]===true){
-    imageHint[0].style.display = "none";
-    hintHide[1] = true;
-
-    nameHint[0].style.display = "none";
-    hintHide[2] = true;
-
-    audioHint[0].style.display = "flex";
-    hintHide[0] = false;
-    }else{
-    audioHint[0].style.display = "none";
-    hintHide[0] = true;
-  }
-}
-  });
-
-function revealHintOne() {
-  let aButton = document.querySelector(".hintButtons #hintOne img");
-  let aTxt = document.querySelector(".hintButtons #hintOne p");
-  aTxt.classList.add("smallFont");
-  aTxt.textContent = 'Audio Hint';
-  aButton.classList.remove("blur");
-  aButton.classList.add("hover-effect");
-}
-
-document.getElementById("hintTwo").addEventListener("click",function() {
-  if(guessCount >= hintsReqArray[1]){
-  console.log("h2 clicked");
-
-
-  const hintImg = document.getElementById("hintImage");
-
-  console.log(correctWeapon.image);
-
-  hintImg.src = correctWeapon.image;
-
-  let audioHint = document.getElementsByClassName("audioHint");
-  let imageHint = document.getElementsByClassName("iconHint");
-      let nameHint = document.getElementsByClassName("nameHint");
-
-
-
-  if(hintHide[1]===true){
-    imageHint[0].style.display = "flex";
-    hintHide[1] = false;
-
-    nameHint[0].style.display = "none";
-    hintHide[2] = true;
-
-    audioHint[0].style.display = "none";
-    hintHide[0] = true;
-    }else{
-    imageHint[0].style.display = "none";
-    hintHide[1] = true;
-  }
-}
-})
-
-function revealHintTwo() {
-  let bButton = document.querySelector(".hintButtons #hintTwo img");
-  let bTxt = document.querySelector(".hintButtons #hintTwo p");
-  bTxt.classList.add("smallFont");
-  bTxt.textContent = 'Icon Hint';
-
-  bButton.classList.remove("blur");
-  bButton.classList.add("hover-effect");
-}
-
-document.getElementById("hintThree").addEventListener("click",function() {
-  if(guessCount >= hintsReqArray[2]){
-  console.log("h3 clicked");
-
-
-  const textContent = document.getElementById("textHint");
-
-  console.log(correctWeapon.name);
-
-  textContent.innerText = correctWeapon.name;
-
-  let audioHint = document.getElementsByClassName("audioHint");
-  let imageHint = document.getElementsByClassName("iconHint");
-  let nameHint = document.getElementsByClassName("nameHint");
-
-   
-
-  if(hintHide[2]===true){
-    imageHint[0].style.display = "none";
-    hintHide[1] = true;
-
-    nameHint[0].style.display = "flex";
-    hintHide[2] = false;
-
-    audioHint[0].style.display = "none";
-    hintHide[0] = true;
-    }else{
-    nameHint[0].style.display = "none";
-    hintHide[2] = true;
-  }
-}
-})
-
-function revealHintThree() {
-  let cButton = document.querySelector(".hintButtons #hintThree img");
-  let cTxt = document.querySelector(".hintButtons #hintThree p");
-  cTxt.classList.add("smallFont");
-  cTxt.textContent = 'Name Hint';
-
-  cButton.classList.remove("blur");
-  cButton.classList.add("hover-effect");
-}
-
-
-  
-
-
-
-
-
-
-
-let hintHide = [true,true,true]; //Array that stores 3 bools that determine if a Hint div should be visible or not (True means hide div,False Means revealed)
-
-let guessCount = 0; //Variable stores amount of guesses so far 
-
-//Simple Helper Function that tracks Increments amount of guesses so far
-function guessCountAdd() {
-  guessCount++;
-
-
-  console.log("GC:", guessCount);
-  localStorage.setItem('guessCount', guessCount);
-
-
-}
 
 
 
@@ -611,23 +212,23 @@ function updateCountdown() {
   setTimeout(updateCountdown, 1000);
 }
 
-let firstGuess = true;
+let hasMadeFirstGuess = true;
 
 //This function is called whenever the state of the page needs to be saved in the local storage
-function saveState() {
+export function saveState() {
   const state = {
-    guessCount: guessCount,
-    guessedWeapon: guessedWeapon,
-    correctWeapon: correctWeapon,
-    guesses: guessesArray,
-    stateBool: savedBool,
-    firstG: firstGuess
+    savedGuessCount: guessCount,
+    savedGuessedWeapon: guessedWeapon,
+    savedCorrectWeapon: correctWeapon,
+    savedGuessesArray: guessesArray,
+    savedWinnerStateBool: winnerStateBool,
+    savedHasMadeFirstGuess: hasMadeFirstGuess,
+    savedCurrentWeaponPool: currentWeaponPool
   };
   localStorage.setItem('pageState', JSON.stringify(state));
 }
 
 
-let guessesArray = [];
 
 
 
@@ -639,24 +240,25 @@ function loadState() {
 
 
   if (state) {
-  
-    const parsedState = JSON.parse(state);
-    firstGuess = parsedState.firstG; //Parses firstG which is the locally saved bool to determine if the user has guessed already
     
-    if(!firstGuess){ // 
+    const parsedState = JSON.parse(state);
+    guessCount = parsedState.savedGuessCount; //Parses savedHasMadeFirstGuess which is the locally saved bool to determine if the user has guessed already
+    
+    if(guessCount>0){ // 
       hintDetailContainer.classList.add('visible');
       tutorialContainer[0].style.display = "flex";
     }
-    savedBool = parsedState.stateBool;
+    currentWeaponPool = parsedState.savedCurrentWeaponPool
+    winnerStateBool = parsedState.savedWinnerStateBool;
     
-    guessCount = parsedState.guessCount;
-    guessedWeapon = parsedState.guessedWeapon;
-    correctWeapon = parsedState.correctWeapon;
-    guessesArray = parsedState.guesses;
+    guessCount = parsedState.savedGuessCount;
+    guessedWeapon = parsedState.savedGuessedWeapon;
+    correctWeapon = parsedState.savedCorrectWeapon;
+    guessesArray = parsedState.savedGuessesArray;
 
     const hintList = document.getElementById("hintList");
     hintList.innerHTML = "";
-    parsedState.guesses.forEach(guess => {
+    parsedState.savedGuessesArray.forEach(guess => {
       const li = document.createElement("li");
       const img = document.createElement("img");
   
@@ -677,7 +279,7 @@ function loadState() {
       div.removeAttribute('id');
     });
     revealHints();
-    correctPop(savedBool);
+    correctPop(winnerStateBool);
   }
 }
 
@@ -700,8 +302,6 @@ export function handleBeforeUnload() {
   }
   
 }
-// Event listeners for search box to save state on input
-document.getElementById("searchBox").addEventListener("input", saveState);
 
 //Function when called clears Local Storage
 export function clearLocalStorage() {
@@ -709,50 +309,34 @@ export function clearLocalStorage() {
   console.log("Clearing Local Storage");
 }
 
+// Event listeners for search box to save state on input
+document.getElementById("searchBox").addEventListener("input", saveState);
 
 
-
+//This async function just waits for the .fetchNumberWinnders call the assigns the number of daily winners retrieved from the backend to 'winnerCount'
 async function numWinners() {
-  try {
-    // Fetch data from the server
-    const response = await fetch('http://localhost:3000/api/site-data');
 
-    // Check if the response is ok (status in the range 200-299)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    Api.fetchNumberWinners()
+    .then((data) => {
 
-    // Parse the response as JSON
-    const stats = await response.json();
+      // Log the response data to the console (for debugging purposes)
+      console.log("numWinners run", data);
 
-    // Log the response data to the console (for debugging purposes)
-    console.log("numWinners run", stats);
-
-    // Update the HTML element with the count of winners
-    document.getElementById('winnerCount').innerText = `${stats.count} people have guessed the weapon today!`;
-    document.getElementById('')
-  } catch (error) {
+      // Update the HTML element with the count of winners
+      document.getElementById('winnerCount').innerText = `${data.count} people have guessed the weapon today!`;
+      document.getElementById('')
+    }).catch((error) => {
     // Handle any errors that occur during the fetch or processing
     console.error('Failed to fetch data:', error);
     document.getElementById('winnerCount').innerText = 'Failed to load data';
-  }
-}
-
-
-// Helper function to check if arrays are equal
-function arraysEqual(a, b) {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (a.length !== b.length) return false;
-
-  for (let i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
+  })
 }
 
 
 
+
+
+function initializeAudioHint(){
 const audio = document.getElementById('audioIn');
 const playButton = document.getElementById('audioListenButton');
 
@@ -770,54 +354,11 @@ document.getElementById('volumeSlider').addEventListener('input', function() {
   var audio = document.getElementById('audioIn');
   audio.volume = this.value;
 });
-
-const hintsReqArray =[5,7,9] // This Array Contains 3 ints which determine the minimum attempts needed to unlock the hints 
-
-//Function that Updates "Attempts required till Guess is unlocked" and also reveals the Guesses after x amount of Attempts
-function revealHints (){
-
-  //this if if block updates string telling user how many attempts are needed to unlock hint 
-  if (guessCount <= hintsReqArray[0]) {
-    let aTxt = document.querySelector(".hintButtons #hintOne p");
-    aTxt.textContent = `Audio Hint in \n${hintsReqArray[0]-guessCount} attempts`;
-  }if (guessCount <= hintsReqArray[1]) {
-    let bTxt = document.querySelector(".hintButtons #hintTwo p");
-    bTxt.textContent = `Icon Hint in \n${hintsReqArray[1]-guessCount} attempts`;
-  }if (guessCount <= hintsReqArray[2]) {
-    let cTxt = document.querySelector(".hintButtons #hintThree p");
-    cTxt.textContent = `Name Hint in \n${hintsReqArray[2]-guessCount} attempts`;
-  }
-
-  //if if block reveals the hintButtons after x attempts
-  if (guessCount >= 2) {
-    revealHintButtons();
-  }if (guessCount >= hintsReqArray[0]) {
-    revealHintOne();
-  }if (guessCount >= hintsReqArray[1]) {
-    revealHintTwo();
-  }if (guessCount >= hintsReqArray[2]) {
-    revealHintThree();
-  }
 }
 
-//Function that blurs the hints 
-function blurHints(){
-  let hintOne = document.querySelector(".hintButtons #hintOne img");
-  let hintTwo = document.querySelector(".hintButtons #hintTwo img");
-  let hintThree = document.querySelector(".hintButtons #hintThree img");
-
-  //This if if block uses guessCount to track what guesses to blur if any so when the page refreshes the user keep their progress
-  if (guessCount <  hintsReqArray[0]) {
-    hintOne.classList.add("blur");
-  }
-  if (guessCount < hintsReqArray[1]) {
-    hintTwo.classList.add("blur");
-  }
-  if (guessCount < hintsReqArray[2]) {
-    hintThree.classList.add("blur");
-  }
 
 
-}
+
+
 
 
