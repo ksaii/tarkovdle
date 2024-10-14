@@ -4,7 +4,7 @@ import {
     handleBeforeUnload, //Function for handling page unload 
     state,   //Bool Variables to determine whether to clear local storage when refreshing or not
     handleSubmit, //Function for handling submitted textbox info
-} from './script.js'
+} from './main.js'
 
 /*Button Event Logic*/
 
@@ -54,7 +54,6 @@ export function initializeEventListeners() {
             resetButton.addEventListener("click",function(){
             state.localClear = true;
             handleBeforeUnload();    
-            location.reload();
             })      
         }else{
             console.error("reset element not found");

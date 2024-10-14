@@ -2,7 +2,7 @@ import{
     guessCount,
     saveState,
     correctWeapon
-} from "./script.js"
+} from "./main.js"
 
 const hintsReqArray =[5,7,9] // This Array Contains 3 ints which determine the minimum attempts needed to unlock the hints 
 

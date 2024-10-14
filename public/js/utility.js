@@ -1,5 +1,3 @@
-
-
 /*Helper Functions or reusable code*/
 
 export function setupButtonClickListener(buttonId, callback) {
@@ -46,4 +44,25 @@ export function arraysEqual(a, b) {
     export function clearInput() {
     var clearBox = document.getElementById("searchBox");
     clearBox.value = "";
+  }
+
+  //This function serves to initialize the audioHint features
+  export function initializeAudioHint(){
+  const audio = document.getElementById('audioIn');
+  const playButton = document.getElementById('audioListenButton');
+  
+  playButton.addEventListener('click', () => {
+    if (audio.paused || audio.ended) {
+      audio.play();
+      playButton.innerHTML = '<img src="images/pausebutton.png" alt="pausebutton">';
+    } else {
+      audio.pause();
+      playButton.innerHTML = '<img src="images/playbutton.png" alt="playbutton">';
+    }
+  });
+  
+  document.getElementById('volumeSlider').addEventListener('input', function() {
+    var audio = document.getElementById('audioIn');
+    audio.volume = this.value;
+  });
   }

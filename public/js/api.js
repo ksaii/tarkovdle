@@ -1,4 +1,4 @@
-import { handleSubmit } from "./script.js";
+import { handleSubmit } from "./main.js";
 /* Code for making API Calls */
 export const Api = {
   // Namespace for API Functions

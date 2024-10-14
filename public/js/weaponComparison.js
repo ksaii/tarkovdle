@@ -1,7 +1,7 @@
 import {
     saveState,
     guessesArray
-} from './script.js'
+} from './main.js'
 
 import {
     arraysEqual
