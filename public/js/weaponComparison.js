@@ -4,7 +4,8 @@ import {
 } from './main.js'
 
 import {
-    arraysEqual
+    arraysEqual,
+    compareArray
 } from './utility.js'
 
 
@@ -78,23 +79,21 @@ export function weaponFeaturesComparison(correctWeapon , guessedWeapon) {
     //weapon price_range divs
   
     if (correctWeapon.price_range !== guessedWeapon.price_range) {
+      const priceRange = document.createElement("div");
+      priceRange.style.backgroundPosition = "center";
+      priceRange.style.backgroundSize = "cover";
+      priceRange.style.backgroundRepeat = "no-repeat";
+      priceRange.id = "nullMatch";
+      priceRange.textContent = `${guessedWeapon.price_range}₽`;
+      priceRange.style.backgroundColor = "red";
   
+
       if(correctWeapon.price_range > guessedWeapon.price_range){
-      const priceRange = document.createElement("div");
-      priceRange.id = "nullMatch";
-      priceRange.textContent = `${guessedWeapon.price_range}₽`;
-  
-      priceRange.style.backgroundColor = "red";
-      details.appendChild(priceRange);
+      priceRange.style.backgroundImage = "url(images/arrow-up.svg)";
       }else{
-      const priceRange = document.createElement("div");
-      priceRange.id = "nullMatch";
-      priceRange.textContent = `${guessedWeapon.price_range}₽`;
-  
-      priceRange.style.backgroundColor = "red";
-      details.appendChild(priceRange);
+      priceRange.style.backgroundImage = "url(images/arrow-down.svg)";
       }
-  
+      details.appendChild(priceRange);
     } else {
       const priceRange = document.createElement("div");
       priceRange.id = "correctMatch";
@@ -111,23 +110,21 @@ export function weaponFeaturesComparison(correctWeapon , guessedWeapon) {
     //weapon weight divs
   
     if (correctWeapon.weight !== guessedWeapon.weight) {
+      const weaponWeight = document.createElement("div");
+      weaponWeight.style.backgroundSize = "cover";
+      weaponWeight.style.backgroundRepeat = "no-repeat";
+      weaponWeight.style.backgroundPosition = "center";
+      weaponWeight.id = "nullMatch";
+      weaponWeight.textContent = `${guessedWeapon.weight}kg`;
+      weaponWeight.style.backgroundColor = "red";
   
+
       if(correctWeapon.weight > guessedWeapon.weight){
-      const weaponWeight = document.createElement("div");
-      weaponWeight.id = "nullMatch";
-      weaponWeight.textContent = `${guessedWeapon.weight}kg`;
-  
-      weaponWeight.style.backgroundColor = "red";
-      details.appendChild(weaponWeight);
+        weaponWeight.style.backgroundImage = "url(images/arrow-up.svg)";
       }else{
-      const weaponWeight = document.createElement("div");
-      weaponWeight.id = "nullMatch";
-      weaponWeight.textContent = `${guessedWeapon.weight}kg`;
-  
-      weaponWeight.style.backgroundColor = "red";
-      details.appendChild(weaponWeight);
+        weaponWeight.style.backgroundImage = "url(images/arrow-down.svg)";
       }
-  
+      details.appendChild(weaponWeight);
     } else {
       const weaponWeight = document.createElement("div");
       weaponWeight.id = "correctMatch";
@@ -140,23 +137,22 @@ export function weaponFeaturesComparison(correctWeapon , guessedWeapon) {
       //weapon fire_rate divs
   
       if (correctWeapon.fire_rate !== guessedWeapon.fire_rate) {
+        const weaponFireRate = document.createElement("div");
+        weaponFireRate.style.backgroundRepeat = "no-repeat";
+        weaponFireRate.style.backgroundSize = "cover";
+        weaponFireRate.style.backgroundPosition = "center";
+        weaponFireRate.id = "nullMatch";
+        weaponFireRate.textContent = `${guessedWeapon.fire_rate}RPM`;
+    
+        weaponFireRate.style.backgroundColor = "red";
   
         if(correctWeapon.fire_rate > guessedWeapon.fire_rate){
-        const weaponFireRate = document.createElement("div");
-        weaponFireRate.id = "nullMatch";
-        weaponFireRate.textContent = `${guessedWeapon.fire_rate}RPM`;
-    
-        weaponFireRate.style.backgroundColor = "red";
-        details.appendChild(weaponFireRate);
+          weaponFireRate.style.backgroundImage = "url(images/arrow-up.svg)";
         }else{
-        const weaponFireRate = document.createElement("div");
-        weaponFireRate.id = "nullMatch";
-        weaponFireRate.textContent = `${guessedWeapon.fire_rate}RPM`;
-    
-        weaponFireRate.style.backgroundColor = "red";
-        details.appendChild(weaponFireRate);
+          weaponFireRate.style.backgroundImage = "url(images/arrow-down.svg)";
         }
-  
+        
+        details.appendChild(weaponFireRate);
       } else {
         const weaponFireRate = document.createElement("div");
         weaponFireRate.id = "correctMatch";
@@ -169,13 +165,20 @@ export function weaponFeaturesComparison(correctWeapon , guessedWeapon) {
   
     //weapon fire_modes divs
   
-    if (!arraysEqual(correctWeapon.firing_modes, guessedWeapon.firing_modes)) {
+    if (compareArray(correctWeapon.firing_modes, guessedWeapon.firing_modes) === 2 || 0) {
       const fmodes = document.createElement("div");
       fmodes.id = "nullMatch";
+
       fmodes.textContent = `${guessedWeapon.firing_modes.join(
         ", "
       )}`;
-      fmodes.style.backgroundColor = "red";
+
+      if(compareArray(correctWeapon.firing_modes, guessedWeapon.firing_modes) === 2){
+        fmodes.style.backgroundColor = "rgb(150, 150, 0)";
+      }else{
+        fmodes.style.backgroundColor = "red";
+      }
+      
       details.appendChild(fmodes);
     } else {
       const fmodes = document.createElement("div");

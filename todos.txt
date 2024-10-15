@@ -1,9 +1,9 @@
 1. Add Loading Screen when loading page 
-2. Add Arrow Up Down and Partial for guess boxes
-3. Add String above Answer Key Called "Answer Key"
-4. Fix Post Win Timer to Be CST Only
-5. Fix Win Count after winning to show your win (so you dont have to refresh page)
-6. Organize script.js into multiply modular files 
+2. Add Arrow Up Down and Partial for guess boxes //DONE 
+3. Add String above Answer Key Called "Answer Key" //DONE
+4. Fix Post Win Timer to Be CST Only //DONE
+5. Fix Win Count after winning to show your win (so you dont have to refresh page) //DONE
+6. Organize script.js into multiply modular files //DONE
 7. Organize style.css 
 8.Make it to where when the daily timer resets the page also resets the local cache AND 
  also resets the daily weapon to something new

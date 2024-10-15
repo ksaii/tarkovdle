@@ -9,7 +9,7 @@ export function setupButtonClickListener(buttonId, callback) {
     }
 }
 
-// Helper function to check if arrays are equal
+// Helper function to check if arrays are equal will only return true of false 
 export function arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -21,6 +21,28 @@ export function arraysEqual(a, b) {
     return true;
   }
   
+  //Helper function to check if array contents are exactly, partially or not at all the same
+  export function compareArray(a,b) {
+    const set1 = new Set(a);
+    const set2 = new Set(b);
+
+    let matches = 0;
+
+    for (let elem of set1){
+      if(set2.has(elem)){
+        matches++;
+      }
+    }
+
+    //Return Values
+    if(matches === set1.size && matches === set2.size){
+      return 1;  // 1 = Arrays the exact same
+    }else if(matches>0){
+      return 2; // 2 = Arrays contain some contents that match
+    }else{
+      return 0; // 0 = Arrays contain nothing that match 
+    }
+  }
 
   //Helper Function that verifies weapon guessed is valid 
   export function checkWeaponReal(weaponName) {

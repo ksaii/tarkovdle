@@ -768,8 +768,12 @@ main{
 
   .colorCodes{
     display: flex;
+    border-top: 10px;
     flex-direction: row;
     margin: 5% 0;
+  }
+  .tutorialContainer p { 
+    font-size: large;
   }
 
   .colorCodes div{
