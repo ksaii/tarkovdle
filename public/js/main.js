@@ -79,6 +79,7 @@ export function handleSubmit() {
 //Event Listener for when the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
+  updateTimer();
   blurHints();
   initializeAudioHint();
   Api.fetchCorrectWeapon()
@@ -154,18 +155,15 @@ async function updateTimer() {
       .padStart(2, "0")}`;
 
     // If the time remaining is 0, clear storage and reload the page
-    setTimeout(() => { 
-        if (timeTillReset <= 1000 ) { // Check for time remaining and flag
-            state.localClear = true;
-            console.log("state:",state.localClear);
-            handleBeforeUnload(); // Clear cache or local storage if needed
-            location.reload(); // Force reload the page
-            
-        }
-    }, 500); // Wait for 1 second before executing the code
     
-   
-
+        if (timeTillReset <= 1000 ) { // Check for time remaining and flag
+            localStorage.clear();
+            setTimeout(() => { 
+            location.reload(); // Force reload the page
+        }, 1000); // Wait for 1 second before executing the code
+        }
+     
+    
   } catch (error) {
     console.error("Error fetching timer:", error);
   }

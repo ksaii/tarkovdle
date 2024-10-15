@@ -34,6 +34,8 @@ console.log(`Daily weapon: ${holder}`);
 
 // Endpoint to get daily weapon attributes
 app.get("/api/daily-weapon", (req, res) => {
+  // Start the schedule
+  scheduleReset();
   const { name, ...attributes } = dailyWeapon;
   const modifiedName = name.slice(0, 2) + ". . .";
 
@@ -63,7 +65,7 @@ app.get("/api/validate-guess", (req, res) => {
       (weapon) => weapon.name.toUpperCase() === userGuess
     );
     console.log("stored guess: ", storedGuess.name);
-    stats.total_wins += 1;
+    stats.total_wins = stats.total_wins + 1;
     writeJsonData(statsFilePath, stats);
 
     res.json({
@@ -89,34 +91,7 @@ app.get("/api/validate-guess", (req, res) => {
 
 // Endpoint to get site data
 app.get("/api/site-data", (req, res) => {
-    // Get the current date in CST format
-    const now = new Date(); // Get current date and time
-
-    // Check if DST is enabled on system
-    const isDST = now.getTimezoneOffset() < new Date(now.getFullYear(), 0, 1).getTimezoneOffset();
-  
-    // Subtract 6 hours for CST or 5 hours if Daylight Saving Time (DST) is enabled 
-    const cstOffset = isDST ? 5 : 6;
-  
-    // Get the current UTC hour and adjust it to CST
-    const currentUTC = new Date(now.getTime());
-    const currentHourCST = (currentUTC.getUTCHours() - cstOffset + 24) % 24;
-  
-    // Create a new date object for the current CST date
-    const today = new Date(currentUTC);
-    today.setHours(currentHourCST, 0, 0, 0); // Set hours, minutes, seconds to zero for the start of the day
-  
-    // Format date as YYYY-MM-DD
-    const formattedToday = today.toISOString().slice(0, 10);
-  
-    // Reset stats if the date has changed
-    if (stats.date !== formattedToday) {
-      stats.date = formattedToday;
-      stats.total_wins = 0;
-    }
-  
     console.log(`api stats ${stats.total_wins}`);
-    
   res.json({ count: stats.total_wins });
 });
 
@@ -158,3 +133,53 @@ app.get('/timer', (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
+
+// Helper function to reset stats if the date has changed
+function resetStatsIfNeeded() {
+  const now = new Date(); // Get current date and time
+
+  // Check if DST is enabled on the system
+  const isDST = now.getTimezoneOffset() < new Date(now.getFullYear(), 0, 1).getTimezoneOffset();
+  
+  // Subtract 6 hours for CST or 5 hours if Daylight Saving Time (DST) is enabled
+  const cstOffset = isDST ? 5 : 6;
+
+  // Get the current UTC hour and adjust it to CST
+  const currentUTC = new Date(now.getTime());
+  const currentHourCST = (currentUTC.getUTCHours() - cstOffset + 24) % 24;
+
+  // Create a new date object for the current CST date
+  const today = new Date(currentUTC);
+  today.setHours(currentHourCST, 0, 0, 0); // Set hours, minutes, seconds to zero for the start of the day
+
+  // Format date as YYYY-MM-DD
+  const formattedToday = today.toISOString().slice(0, 10);
+
+  // Reset stats if the date has changed
+  console.log("Checking Schedule");
+  if (stats.date !== formattedToday) {
+    stats.total_wins = 0;
+    stats.date = formattedToday;
+    
+    writeJsonData(statsFilePath, stats); // Write updated stats back to the JSON file
+    console.log(`Stats reset for date: ${formattedToday}`);
+  }
+}
+
+// Function to check time and call resetStatsIfNeeded
+function scheduleReset() {
+  // Call resetStatsIfNeeded immediately
+  resetStatsIfNeeded();
+
+  // Set interval to check every hour
+  setInterval(() => {
+
+    const now = new Date();
+    const secondsUntilMidnight = ((24 - now.getHours()) * 3600) - (now.getMinutes() * 60) - now.getSeconds();
+    
+    if (secondsUntilMidnight < 3600) { // Less than 1 hour until midnight
+      resetStatsIfNeeded(); // Check and reset stats
+    }
+  }, 60000); // Check every minute
+}
+

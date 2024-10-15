@@ -10,6 +10,8 @@ export const Api = {
    * 
    */
 
+
+
   validateGuess: function (guess) {
     // Accept guess as parameter
     return fetch(`http://localhost:3000/api/validate-guess?guess=${guess}`)
