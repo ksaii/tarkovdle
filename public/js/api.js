@@ -12,53 +12,59 @@ export const Api = {
 
 
 
-  validateGuess: function (guess) {
+  validateGuess: async function (guess) {
+    try{
     // Accept guess as parameter
-    return fetch(`http://localhost:3000/api/validate-guess?guess=${guess}`)
-      .then((response) => response.json()) // Convert the response to JSON
-      .catch((error) => {
-        console.error("Error Validating Guess: ", error);
-        throw error; // Re-throw the error to be caught in handleSubmit
-      });
+    const response = await fetch(`/api/validate-guess?guess=${guess}`);
+    return await response.json(); // Convert the response to JSON
+    } catch(error) {
+    console.error("Error Validating Guess: ", error);
+    throw error;
+    }
+      
   },
   /**
    * Fetches all images and names for weapons 
    * @returns {{name: string, image: string}}
    * An object containing the name of the weapons and image url strings
    */
-  fetchWeaponData: function () {
-    return fetch("http://localhost:3000/api/weapon-data")
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error("Error Fetching Weapon Data", error);
-      });
+  fetchWeaponData: async function () {
+    try {
+      const response = await fetch("/api/weapon-data");
+      return await response.json();
+    } catch (error) {
+      console.error("Error Fetching Weapon Data", error);
+    }
   },
   /**
    * Fetches the object of the Daily Weapon 
    * @returns {Array<Weapon>} 
    * An object containing the daily weapon
    */
-  fetchCorrectWeapon: function (){
-    return fetch("http://localhost:3000/api/daily-weapon")
-    .then((response) => response.json())
-    .catch((error) => {
-      console.error("Error fetching daily weapon:", error)
-    });
+  fetchCorrectWeapon: async function () {
+    try {
+      const response = await fetch("/api/daily-weapon");
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching daily weapon:", error);
+    }
   },
   /**
    * Fetches data about the site like how many people have won today etc...
    * 
    * @returns {{count: number}} returns.count - the total number of winners logged today
    */
-  fetchNumberWinners: function (){
-    return fetch("http://localhost:3000/api/site-data")
-    .then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+  fetchNumberWinners: async function () {
+    try {
+      const response = await fetch("/api/site-data");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching Number of Winners:", error);
     }
-    return response.json()})
-    .catch((error) => {
-      console.error("Error fetching Number of Winners:",error);
-    })
   }
-};
+
+  
+}

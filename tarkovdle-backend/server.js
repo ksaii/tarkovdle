@@ -42,7 +42,7 @@ let resetStatus = false;
 app.get("/api/daily-weapon", (req, res) => {
   // Start the schedule
   const holder = dailyWeapon.name.toUpperCase();
-  console.log(`User has loaded a Daily weapon: ${holder}`);
+  console.log(`User has loaded the Daily weapon: ${holder}`);
   const { name, ...attributes } = dailyWeapon;
   const modifiedName = name.slice(0, 2) + ". . .";
 
@@ -71,7 +71,6 @@ app.get("/api/validate-guess", (req, res) => {
     const storedGuess = weapons.find(
       (weapon) => weapon.name.toUpperCase() === userGuess
     );
-    console.log("stored guess: ", storedGuess.name);
     stats.total_wins = stats.total_wins + 1;
     writeJsonData(statsFilePath, stats);
 
@@ -80,25 +79,20 @@ app.get("/api/validate-guess", (req, res) => {
       message: "Correct! You guessed the daily weapon.",
       filteredGuess: storedGuess,
     });
-    console.log("Guess", storedGuess.name);
   } else {
     const storedGuess = weapons.find(
       (weapon) => weapon.name.toUpperCase() === userGuess
     );
-    console.log("stored guess: ", storedGuess.name);
-    console.log("more backend test: ", storedGuess);
     res.json({
       correct: false,
       message: "Incorrect. Try again!",
       filteredGuess: storedGuess,
     });
-    console.log("Guess", storedGuess.name);
   }
 });
 
 // Endpoint to get site data
 app.get("/api/site-data", (req, res) => {
-    console.log(`api stats ${stats.total_wins}`);
   res.json({ count: stats.total_wins, lastResetKey: stats.lastResetKey });
 });
 
@@ -132,10 +126,10 @@ function resetStatsIfNeeded() {
     dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
     writeJsonData(statsFilePath, stats); // Write updated stats back to the JSON file
     console.log(`Resetting page for new date: ${formattedToday}`);
-    console.log("Reset Status signals sent:",resetStatus);
+    console.log("Reset Status signals sent: ",resetStatus,"\n");
     setTimeout(()=> resetStatsIfNeeded(),1000);
   } else {
-    console.log("No Reset Needed for date: ", stats.date);
+    console.log("No Reset Needed for date: \n", stats.date);
     resetStatus = false;
   }
 }
@@ -148,8 +142,8 @@ function scheduleReset() {
 
   // Set interval to check every hour
   setInterval(() => {
-    tempTest();//calculateRemainingTimeCST();
-    console.log("Time left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft);
+    calculateRemainingTimeCST();
+    console.log("\nTime left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft);
     if (hoursLeft === 0 && minutesLeft === 0) { // Less than 1 hour until midnight
       resetStatsIfNeeded(); // Check and reset stats
     }
@@ -160,7 +154,6 @@ function scheduleReset() {
 
 // Endpoint to check reset status
 app.get('/api/reset-status', (req, res) => {
-  console.log("Reset Status:",resetStatus);
   res.json({ resetOccurred: resetStatus });
 });
 
@@ -180,18 +173,17 @@ const now = new Date(); // Get current date and time
   const minutesCST = currentUTC.getUTCMinutes();
   const secondsCST = currentUTC.getUTCSeconds();
 
+  const nowCST = new Date(now.getTime() - cstOffset * 60 * 60 * 1000); // Calcs correct current CST date
+
   const endOfDayCST = (23 - currentHourCST) * 3600 + (59 - minutesCST) * 60 + (59 - secondsCST);
 
   hoursLeft = Math.floor(endOfDayCST / 3600);
   minutesLeft = Math.floor((endOfDayCST % 3600) / 60);
   secondsLeft = endOfDayCST % 60
 
-  // Create a new date object for the current CST date
-  const today = new Date(currentUTC);
-  today.setHours(currentHourCST, 0, 0, 0); // Set hours, minutes, seconds to zero for the start of the day
 
   // Format date as YYYY-MM-DD
-  formattedToday = today.toISOString().slice(0, 10);
+  formattedToday = nowCST.toISOString().slice(0, 10);
 
 }
 
