@@ -272,7 +272,7 @@ main{
   .iconHint img {
     height: 84px;
     width: 84px;
-    filter: grayscale(100%) blur(1.4px);
+    filter: grayscale(100%) blur(1.5px);
     transform: rotate(180deg);
 
   }

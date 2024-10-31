@@ -8,6 +8,9 @@ const path = require("path");
 // Enable CORS for all origins
 app.use(cors());
 
+// Enable CORS for all origins
+app.use(cors());
+
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, "../public")));
 
@@ -143,7 +146,7 @@ function scheduleReset() {
   // Set interval to check every hour
   setInterval(() => {
     calculateRemainingTimeCST();
-    console.log("\nTime left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft);
+    console.log("\nTime left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft,"\n Date: ",formattedToday);
     if (hoursLeft === 0 && minutesLeft === 0) { // Less than 1 hour until midnight
       resetStatsIfNeeded(); // Check and reset stats
     }
@@ -159,23 +162,27 @@ app.get('/api/reset-status', (req, res) => {
 
 
 function calculateRemainingTimeCST(){
-const now = new Date(); // Get current date and time
+  const now = new Date(); // Get current date and time in UTC
+    const month = now.getUTCMonth(); // 0-indexed (January is 0)
+    const day = now.getUTCDate();
+    const year = now.getUTCFullYear();
 
-  // Check if DST is enabled on the system
-  const isDST = now.getTimezoneOffset() < new Date(now.getFullYear(), 0, 1).getTimezoneOffset();
-  
-  // Subtract 6 hours for CST or 5 hours if Daylight Saving Time (DST) is enabled
-  const cstOffset = isDST ? 5 : 6;
+    // Determine if we are in DST (CDT) or not (CST)
+    const isDST = (month > 2 && month < 11) || (month === 2 && (day >= 14)); // Simple check for DST
 
-  // Get the current UTC hour and adjust it to CST
-  const currentUTC = new Date(now.getTime());
-  const currentHourCST = (currentUTC.getUTCHours() - cstOffset + 24) % 24;
-  const minutesCST = currentUTC.getUTCMinutes();
-  const secondsCST = currentUTC.getUTCSeconds();
+    // Define the CST offset
+    const cstOffset = isDST ? 5 : 6; // CDT is UTC-5, CST is UTC-6
 
-  const nowCST = new Date(now.getTime() - cstOffset * 60 * 60 * 1000); // Calcs correct current CST date
+    // Calculate current CST time
+    const nowCST = new Date(now.getTime() - cstOffset * 60 * 60 * 1000);
 
-  const endOfDayCST = (23 - currentHourCST) * 3600 + (59 - minutesCST) * 60 + (59 - secondsCST);
+    // Get current hour, minutes, and seconds in CST
+    const currentHourCST = nowCST.getUTCHours();
+    const minutesCST = nowCST.getUTCMinutes();
+    const secondsCST = nowCST.getUTCSeconds();
+
+    // Calculate remaining time until the end of the day in CST
+    const endOfDayCST = (23 - currentHourCST) * 3600 + (59 - minutesCST) * 60 + (59 - secondsCST);
 
   hoursLeft = Math.floor(endOfDayCST / 3600);
   minutesLeft = Math.floor((endOfDayCST % 3600) / 60);
