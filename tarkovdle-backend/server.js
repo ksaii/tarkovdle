@@ -26,16 +26,23 @@ function writeJsonData(file, data) {
 }
 
 // Select a daily weapon
-const dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
+let dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
 
-// Log the daily weapon (for debugging)
-const holder = dailyWeapon.name.toUpperCase();
-console.log(`Daily weapon: ${holder}`);
+//Global CST time variables
+let hoursLeft, minutesLeft, secondsLeft, formattedToday;
+
+
+//Global Var that determines resets on frontend
+let resetStatus = false;
+
+
+
 
 // Endpoint to get daily weapon attributes
 app.get("/api/daily-weapon", (req, res) => {
   // Start the schedule
-  scheduleReset();
+  const holder = dailyWeapon.name.toUpperCase();
+  console.log(`User has loaded a Daily weapon: ${holder}`);
   const { name, ...attributes } = dailyWeapon;
   const modifiedName = name.slice(0, 2) + ". . .";
 
@@ -73,7 +80,7 @@ app.get("/api/validate-guess", (req, res) => {
       message: "Correct! You guessed the daily weapon.",
       filteredGuess: storedGuess,
     });
-    console.log("Guess", storedGuess);
+    console.log("Guess", storedGuess.name);
   } else {
     const storedGuess = weapons.find(
       (weapon) => weapon.name.toUpperCase() === userGuess
@@ -85,41 +92,21 @@ app.get("/api/validate-guess", (req, res) => {
       message: "Incorrect. Try again!",
       filteredGuess: storedGuess,
     });
-    console.log("Guess", storedGuess);
+    console.log("Guess", storedGuess.name);
   }
 });
 
 // Endpoint to get site data
 app.get("/api/site-data", (req, res) => {
     console.log(`api stats ${stats.total_wins}`);
-  res.json({ count: stats.total_wins });
+  res.json({ count: stats.total_wins, lastResetKey: stats.lastResetKey });
 });
 
 
 
 function getRemainingTimeCST() {
-  const now = new Date(); // Get current date and time
-
-  //Checks if DST is enabled on system
-  const isDST = now.getTimezoneOffset() < new Date(now.getFullYear(), 0, 1).getTimezoneOffset();
-  //Subtracts 6 hours for CST or 5 hours if DayLightsaving(DST) time is enabled 
-  const cstOffset = isDST ? 5 : 6;
-
-  const currentUTC = new Date(now.getTime()); // Current UTC time
-
-  // Get the current UTC hour and adjust it to CST by subtracting 6 hours
-  const currentHourCST = (currentUTC.getUTCHours() - cstOffset + 24) % 24;
-  const minutesCST = currentUTC.getUTCMinutes();
-  const secondsCST = currentUTC.getUTCSeconds();
-
-  // Calculate time until end of day (23:59:59 CST)
-  const endOfDayCST = (23 - currentHourCST) * 3600 + (59 - minutesCST) * 60 + (59 - secondsCST);
-
-  const hours = Math.floor(endOfDayCST / 3600);
-  const minutes = Math.floor((endOfDayCST % 3600) / 60);
-  const seconds = endOfDayCST % 60;
-
-  return { hours, minutes, seconds };
+  calculateRemainingTimeCST();
+  return { hoursLeft, minutesLeft, secondsLeft };
 }
 
 
@@ -129,14 +116,57 @@ app.get('/timer', (req, res) => {
   res.json(remainingTime);
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
-});
 
 // Helper function to reset stats if the date has changed
 function resetStatsIfNeeded() {
-  const now = new Date(); // Get current date and time
+
+  console.log("Checking if reset is needed for date: ", stats.date);
+
+  // Reset stats if the date has changed
+  if (stats.date !== formattedToday) {
+    resetStatus = true;
+    stats.total_wins = 0;
+    stats.date = formattedToday;
+    stats.lastResetKey += 1;
+    console.log("Incrementing Reset Key",stats.lastResetKey);
+    dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
+    writeJsonData(statsFilePath, stats); // Write updated stats back to the JSON file
+    console.log(`Resetting page for new date: ${formattedToday}`);
+    console.log("Reset Status signals sent:",resetStatus);
+    setTimeout(()=> resetStatsIfNeeded(),1000);
+  } else {
+    console.log("No Reset Needed for date: ", stats.date);
+    resetStatus = false;
+  }
+}
+
+// Function to check time and call resetStatsIfNeeded
+function scheduleReset() {
+  // Call resetStatsIfNeeded immediately
+  calculateRemainingTimeCST();
+  resetStatsIfNeeded();
+
+  // Set interval to check every hour
+  setInterval(() => {
+    tempTest();//calculateRemainingTimeCST();
+    console.log("Time left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft);
+    if (hoursLeft === 0 && minutesLeft === 0) { // Less than 1 hour until midnight
+      resetStatsIfNeeded(); // Check and reset stats
+    }
+  }, 60000); // Check every minute
+}
+
+
+
+// Endpoint to check reset status
+app.get('/api/reset-status', (req, res) => {
+  console.log("Reset Status:",resetStatus);
+  res.json({ resetOccurred: resetStatus });
+});
+
+
+function calculateRemainingTimeCST(){
+const now = new Date(); // Get current date and time
 
   // Check if DST is enabled on the system
   const isDST = now.getTimezoneOffset() < new Date(now.getFullYear(), 0, 1).getTimezoneOffset();
@@ -147,39 +177,28 @@ function resetStatsIfNeeded() {
   // Get the current UTC hour and adjust it to CST
   const currentUTC = new Date(now.getTime());
   const currentHourCST = (currentUTC.getUTCHours() - cstOffset + 24) % 24;
+  const minutesCST = currentUTC.getUTCMinutes();
+  const secondsCST = currentUTC.getUTCSeconds();
+
+  const endOfDayCST = (23 - currentHourCST) * 3600 + (59 - minutesCST) * 60 + (59 - secondsCST);
+
+  hoursLeft = Math.floor(endOfDayCST / 3600);
+  minutesLeft = Math.floor((endOfDayCST % 3600) / 60);
+  secondsLeft = endOfDayCST % 60
 
   // Create a new date object for the current CST date
   const today = new Date(currentUTC);
   today.setHours(currentHourCST, 0, 0, 0); // Set hours, minutes, seconds to zero for the start of the day
 
   // Format date as YYYY-MM-DD
-  const formattedToday = today.toISOString().slice(0, 10);
+  formattedToday = today.toISOString().slice(0, 10);
 
-  // Reset stats if the date has changed
-  console.log("Checking Schedule");
-  if (stats.date !== formattedToday) {
-    stats.total_wins = 0;
-    stats.date = formattedToday;
-    
-    writeJsonData(statsFilePath, stats); // Write updated stats back to the JSON file
-    console.log(`Stats reset for date: ${formattedToday}`);
-  }
 }
 
-// Function to check time and call resetStatsIfNeeded
-function scheduleReset() {
-  // Call resetStatsIfNeeded immediately
-  resetStatsIfNeeded();
 
-  // Set interval to check every hour
-  setInterval(() => {
 
-    const now = new Date();
-    const secondsUntilMidnight = ((24 - now.getHours()) * 3600) - (now.getMinutes() * 60) - now.getSeconds();
-    
-    if (secondsUntilMidnight < 3600) { // Less than 1 hour until midnight
-      resetStatsIfNeeded(); // Check and reset stats
-    }
-  }, 60000); // Check every minute
-}
-
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
+  scheduleReset();
+});

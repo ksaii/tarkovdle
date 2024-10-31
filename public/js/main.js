@@ -47,6 +47,8 @@ export const state = {
   localClear: false,
 };
 
+let resettingPageState = false; // This let allows handlebeforeunload function to check whether it should save data before unload or not
+
 // Function to handle submitting a guess
 export function handleSubmit() {
   let guess = document.getElementById("searchBox").value.toUpperCase();
@@ -78,6 +80,8 @@ export function handleSubmit() {
 
 //Event Listener for when the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
+  checkStatsReset();
+  setInterval(updateTimer, 1000);
   loadState();
   updateTimer();
   blurHints();
@@ -143,32 +147,35 @@ async function updateTimer() {
     const data = await response.json();
 
     // Destructure the time data
-    const { hours, minutes, seconds } = data;
+    const { hoursLeft, minutesLeft, secondsLeft } = data;
 
-    const timeTillReset = (hours * 3600 + minutes * 60 + seconds) * 1000;
+    const timeTillReset = (hoursLeft * 3600 + minutesLeft * 60 + secondsLeft) * 1000;
 
     // Update the timer display
-    document.getElementById("countdown").innerText = `${hours
+    document.getElementById("countdown").innerText = `${hoursLeft
       .toString()
-      .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+      .padStart(2, "0")}:${minutesLeft.toString().padStart(2, "0")}:${secondsLeft
       .toString()
       .padStart(2, "0")}`;
 
     // If the time remaining is 0, clear storage and reload the page
+
     
-        if (timeTillReset <= 1000 ) { // Check for time remaining and flag
-            localStorage.clear();
-            setTimeout(() => { 
-            location.reload(); // Force reload the page
-        }, 1000); // Wait for 1 second before executing the code
-        }
+    const resetResponse = await fetch("/api/reset-status");
+    const resetData = await resetResponse.json();
+    
+    
+    if (resetData.resetOccurred) {
+      setTimeout(() => location.reload(), 1000);
+    } 
      
     
   } catch (error) {
     console.error("Error fetching timer:", error);
   }
-  setTimeout(updateTimer, 1000);
 }
+
+
 
 //This function is called whenever the state of the page needs to be saved in the local storage
 export function saveState() {
@@ -237,9 +244,12 @@ window.addEventListener("beforeunload", handleBeforeUnload); //Event Listener to
 
 // Function to handle state save and clear local storage on page unload
 export function handleBeforeUnload() {
+  if(!resettingPageState){ // If Page local storage isnt supposed to reset then it will save
   saveState();
   console.log("Saving State");
+  }
   if (state.localClear) {
+    console.log("Clearing State");
     clearLocalStorage();
     location.reload();
   }
@@ -273,3 +283,30 @@ async function numWinners() {
       document.getElementById("winnerCount").innerText = "Failed to load data";
     });
 }
+
+
+// Function to check if the stats have been reset by server
+function checkStatsReset() {
+  fetch('/api/site-data') 
+    .then(response => response.json())
+    .then(data => {
+      const serverResetKey = data.lastResetKey; //Server Current Key value
+      const storedlastResetKey = localStorage.getItem('lastResetKey'); //Locally Saved Key value
+
+
+
+      // Checks if locally stored key is different from server(currentday)
+      if (storedlastResetKey != serverResetKey) {
+        clearLocalStorage(); // Clear local storage function
+
+        localStorage.setItem('lastResetKey', serverResetKey);//Only save the current serverResetKey to local wipe rest of local storage
+
+        resettingPageState = true; //Update variable before page reload to account for the handleunload event listener so that it doesn't save local and not reset
+
+        //Reload the page
+       location.reload();
+      }
+    })
+    .catch(error => console.error('Error checking stats:', error));
+}
+
