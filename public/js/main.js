@@ -41,6 +41,9 @@ export let guessesArray = []; // This contains an array of objects which contain
 
 export let guessCount = 0; //Variable stores amount of guesses user has made so far today
 
+let totalSeconds;
+
+let timerInterval;
 
 // This object a bool that dicatates if the page will clear local storage on refresh
 export const state = {
@@ -81,7 +84,7 @@ export function handleSubmit() {
 //Event Listener for when the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   checkStatsReset();
-  setInterval(updateTimer, 1000);
+  updateTimer();
   loadState();
   updateTimer();
   blurHints();
@@ -140,6 +143,7 @@ function correctPop(win) {
   }
 }
 
+//This function fetches the time In CST format from the frontend
 async function updateTimer() {
   try {
     // Fetch the timer data from the server
@@ -149,30 +153,50 @@ async function updateTimer() {
     // Destructure the time data
     const { hoursLeft, minutesLeft, secondsLeft } = data;
 
-    const timeTillReset = (hoursLeft * 3600 + minutesLeft * 60 + secondsLeft) * 1000;
+    totalSeconds = (hoursLeft * 3600) + (minutesLeft * 60) + secondsLeft;
+    
+    //Call and start the local timer
+    startTimer(totalSeconds);
+    
+  } catch (error) {
+    console.error("Error fetching timer:", error);
+  }
+}
 
-    // Update the timer display
+
+
+//This function starts the timer on a 1 second interval using the seconds remaining passed from updateTimer
+function startTimer(totalSeconds) {
+
+  clearInterval(timerInterval);
+
+  //Updating Countdown and if midnight hits it reloads page
+  timerInterval = setInterval(() => {
+    if (totalSeconds <= 0) {
+
+      alert("Fetching new weapon and resetting the site...");
+      setTimeout(() => {
+        location.reload();
+    },5000);
+
+    } else {
+      //Start the timer 
+      totalSeconds--;
+      const hoursLeft = Math.floor(totalSeconds / 3600);
+      const minutesLeft = Math.floor((totalSeconds % 3600) / 60);
+      const secondsLeft = totalSeconds % 60;
+
+
     document.getElementById("countdown").innerText = `${hoursLeft
       .toString()
       .padStart(2, "0")}:${minutesLeft.toString().padStart(2, "0")}:${secondsLeft
       .toString()
       .padStart(2, "0")}`;
 
-    // If the time remaining is 0, clear storage and reload the page
+    
+    }
+  },1000);
 
-    
-    const resetResponse = await fetch("/api/reset-status");
-    const resetData = await resetResponse.json();
-    
-    
-    if (resetData.resetOccurred) {
-      setTimeout(() => location.reload(), 1000);
-    } 
-     
-    
-  } catch (error) {
-    console.error("Error fetching timer:", error);
-  }
 }
 
 

@@ -35,8 +35,6 @@ let dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
 let hoursLeft, minutesLeft, secondsLeft, formattedToday;
 
 
-//Global Var that determines resets on frontend
-let resetStatus = false;
 
 
 
@@ -120,8 +118,7 @@ function resetStatsIfNeeded() {
   console.log("Checking if reset is needed for date: ", stats.date);
 
   // Reset stats if the date has changed
-  if (stats.date !== formattedToday) {
-    resetStatus = true;
+  if (stats.date != formattedToday) {
     stats.total_wins = 0;
     stats.date = formattedToday;
     stats.lastResetKey += 1;
@@ -129,11 +126,8 @@ function resetStatsIfNeeded() {
     dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
     writeJsonData(statsFilePath, stats); // Write updated stats back to the JSON file
     console.log(`Resetting page for new date: ${formattedToday}`);
-    console.log("Reset Status signals sent: ",resetStatus,"\n");
-    setTimeout(()=> resetStatsIfNeeded(),1000);
   } else {
     console.log("No Reset Needed for date: \n", stats.date);
-    resetStatus = false;
   }
 }
 
@@ -146,19 +140,14 @@ function scheduleReset() {
   // Set interval to check every hour
   setInterval(() => {
     calculateRemainingTimeCST();
-    console.log("\nTime left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft,"\n Date: ",formattedToday);
-    if (hoursLeft === 0 && minutesLeft === 0) { // Less than 1 hour until midnight
+    console.log("\nTime left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft,"\n Date: ",formattedToday, ", Saved Date: ", stats.date);
+    if (stats.date != formattedToday) { // Less than 1 hour until midnight
       resetStatsIfNeeded(); // Check and reset stats
     }
   }, 60000); // Check every minute
 }
 
 
-
-// Endpoint to check reset status
-app.get('/api/reset-status', (req, res) => {
-  res.json({ resetOccurred: resetStatus });
-});
 
 
 function calculateRemainingTimeCST(){
