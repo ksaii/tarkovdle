@@ -5,14 +5,25 @@ const port = process.env.PORT || 3000;
 const fs = require("fs");
 const path = require("path");
 
-// Enable CORS for all origins
-app.use(cors());
+
+const statsRoutes = require("../routes/stats");
+const statsController = require('../controllers/statsController');
+
+const db = require('../models/db');
+
 
 // Enable CORS for all origins
 app.use(cors());
+
+app.use(express.json());
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, "../public")));
+
+
+// DB imports
+app.use('/api', statsRoutes);
+
 
 // Load and read Site Stats
 const statsFilePath = path.join(__dirname, "../site-stats.json");
@@ -28,8 +39,8 @@ function writeJsonData(file, data) {
   fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf-8");
 }
 
-// Select a daily weapon
-let dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
+// Daily weapon
+let dailyWeapon;
 
 //Global CST time variables
 let hoursLeft, minutesLeft, secondsLeft, formattedToday;
@@ -72,8 +83,12 @@ app.get("/api/validate-guess", (req, res) => {
     const storedGuess = weapons.find(
       (weapon) => weapon.name.toUpperCase() === userGuess
     );
-    stats.total_wins = stats.total_wins + 1;
-    writeJsonData(statsFilePath, stats);
+ 
+       // Update wins in DB
+       db.execute(
+        'UPDATE site_stats SET total_global_wins = total_global_wins + 1 WHERE date = ?',
+        [formattedToday]
+      );
 
     res.json({
       correct: true,
@@ -93,8 +108,17 @@ app.get("/api/validate-guess", (req, res) => {
 });
 
 // Endpoint to get site data
-app.get("/api/site-data", (req, res) => {
-  res.json({ count: stats.total_wins, lastResetKey: stats.lastResetKey });
+app.get("/api/site-data", async (req, res) => {
+
+  try {
+    const [rows] = await db.execute('SELECT total_global_wins, last_reset_key FROM site_stats WHERE date = ?', [formattedToday]);
+    const stats = rows[0] || { total_global_wins: 0, last_reset_key: 0 };
+    res.json({ count: stats.total_global_wins, lastResetKey: stats.last_reset_key });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+  //DELETE ME res.json({ count: stats.total_wins, lastResetKey: stats.lastResetKey });
 });
 
 
@@ -112,22 +136,38 @@ app.get('/timer', (req, res) => {
 });
 
 
-// Helper function to reset stats if the date has changed
-function resetStatsIfNeeded() {
+async function resetStatsIfNeeded() {
+  console.log("Checking if reset is needed for date: ", formattedToday);
 
-  console.log("Checking if reset is needed for date: ", stats.date);
+  try {
+    const [rows] = await db.execute('SELECT date FROM site_stats WHERE date = ?', [formattedToday]);
 
-  // Reset stats if the date has changed
-  if (stats.date != formattedToday) {
-    stats.total_wins = 0;
-    stats.date = formattedToday;
-    stats.lastResetKey += 1;
-    console.log("Incrementing Reset Key",stats.lastResetKey);
-    dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
-    writeJsonData(statsFilePath, stats); // Write updated stats back to the JSON file
-    console.log(`Resetting page for new date: ${formattedToday}`);
-  } else {
-    console.log("No Reset Needed for date: \n", stats.date);
+    // Reset stats if the date has changed
+    if (rows.length === 0) { // If stats for today do not exist
+
+      dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)]; // Choose random Weapon
+
+      await db.execute(
+        'INSERT INTO site_stats (date, total_global_wins, last_reset_key, daily_weapon) VALUES (?, 0, 0, ?)',
+        [formattedToday, dailyWeapon.name]
+      );
+      console.log(`Setting stats for new date: ${formattedToday}`);
+    } else {
+      const stats = rows[0];
+      console.log("DB date: ",stats.date);
+      if (stats.date !== formattedToday) {
+        dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
+        await db.execute(
+          'UPDATE site_stats SET total_global_wins = 0, last_reset_key = last_reset_key + 1, daily_weapon = ? WHERE date = ?',
+          [dailyWeapon.name, formattedToday]
+        );
+        console.log(`Resetting stats for new date: ${formattedToday}`);
+      } else {
+        console.log("No Reset Needed for date: ", stats.date);
+      }
+    }
+  } catch (error) {
+    console.error('Error resetting stats:', error);
   }
 }
 
@@ -140,7 +180,7 @@ function scheduleReset() {
   // Set interval to check every hour
   setInterval(() => {
     calculateRemainingTimeCST();
-    console.log("\nTime left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft,"\n Date: ",formattedToday, ", Saved Date: ", stats.date);
+    console.log("\nTime left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft,"\n Date: ",formattedToday);
     if (stats.date != formattedToday) { // Less than 1 hour until midnight
       resetStatsIfNeeded(); // Check and reset stats
     }
@@ -179,7 +219,7 @@ function calculateRemainingTimeCST(){
 
 
   // Format date as YYYY-MM-DD
-  formattedToday = nowCST.toISOString().slice(0, 10);
+  formattedToday = nowCST.toISOString().slice(0, 10) ;
 
 }
 
@@ -187,6 +227,6 @@ function calculateRemainingTimeCST(){
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
+  console.log(`Server running on: ${port}/`);
   scheduleReset();
 });
