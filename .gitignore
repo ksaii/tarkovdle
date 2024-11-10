@@ -5,3 +5,4 @@ public/sounds/
 node_modules
 cypress
 cypress.config.js
+.env
