@@ -25,9 +25,6 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use('/api', statsRoutes);
 
 
-// Load and read Site Stats
-const statsFilePath = path.join(__dirname, "../site-stats.json");
-const stats = JSON.parse(fs.readFileSync(statsFilePath, "utf-8"));
 
 // Load and read weapons data
 
@@ -37,13 +34,19 @@ async function getWeaponsFromDB() {
 
 }
 
+
+
 //Array Of weapon objects from db
 let weapons = [];
+
+let dbDate ;
+
 
 getWeaponsFromDB().then(fetchedWeapons => {
   weapons = fetchedWeapons;
   
 }).catch(console.error);
+
 
 
 
@@ -62,7 +65,6 @@ let hoursLeft, minutesLeft, secondsLeft, formattedToday;
 // Endpoint to get daily weapon attributes
 app.get("/api/daily-weapon", (req, res) => {
   // Start the schedule
-  console.log("Daily Weapon Var:",dailyWeapon.name);
   const holder = dailyWeapon.name.toUpperCase();
   console.log(`User has loaded the Daily weapon: ${holder}`);
   const { name, ...attributes } = dailyWeapon;
@@ -151,37 +153,41 @@ async function resetStatsIfNeeded() {
   console.log("Checking if reset is needed for date: ", formattedToday);
 
   try {
-    const [rows] = await db.execute('SELECT date FROM site_stats WHERE date = ?', [formattedToday]);
+    const [todayRows] = await db.execute('SELECT last_reset_key FROM site_stats WHERE date = ?', [formattedToday]);
+
+    let lastResetKey;
+
 
     const [storedDailyWeapon] = await db.execute('SELECT daily_weapon FROM site_stats WHERE date = ?', [formattedToday])
     // Reset stats if the date has changed
-    if (rows.length === 0) { // If stats for today do not exist
+    if (todayRows.length === 0) { // If stats for today do not exist
+
+
+      const [previousRows] = await db.execute('SELECT last_reset_key FROM site_stats WHERE date < ? ORDER BY date DESC LIMIT 1', [formattedToday]);
+
+      if (previousRows.length > 0) {
+        // Increment from the previous last_reset_key
+        lastResetKey = previousRows[0].last_reset_key + 1;
+      } else {
+        // No previous record, start from 1
+        lastResetKey = 1;
+      }
 
       dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)]; // Choose random Weapon
 
       await db.execute(
-        'INSERT INTO site_stats (date, total_global_wins, last_reset_key, daily_weapon) VALUES (?, 0, 0, ?)',
-        [formattedToday, dailyWeapon.id]
+        'INSERT INTO site_stats (date, total_global_wins, last_reset_key, daily_weapon) VALUES (?, 0, ?, ?)',
+        [formattedToday,lastResetKey, dailyWeapon.id]
       );
+      dbDate = formattedToday;
       console.log(`Setting stats for new date: ${formattedToday}`);
     } else {
-      const stats = rows[0];
-      console.log("DB date: ",stats.date);
-      if (stats.date !== formattedToday) {
-        dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
-        await db.execute(
-          'UPDATE site_stats SET total_global_wins = 0, last_reset_key = last_reset_key + 1, daily_weapon = ? WHERE date = ?',
-          [dailyWeapon.id, formattedToday]
-        );
-        console.log(`Resetting stats for new date: ${formattedToday}`);
-      } else {
-
-
         dailyWeapon = weapons[storedDailyWeapon[0].daily_weapon-1];
+        dbDate = formattedToday;
 
         console.log("DailyWeapon: ",dailyWeapon.name);
-        console.log("No Reset Needed for date: ", stats.date);
-      }
+        console.log("No Reset Needed for date: ", formattedToday);
+      
     }
   } catch (error) {
     console.error('Error resetting stats:', error);
@@ -198,7 +204,8 @@ function scheduleReset() {
   setInterval(() => {
     calculateRemainingTimeCST();
     console.log("\nTime left Till Daily Reset\nHours: ",hoursLeft," Minutes: ",minutesLeft,"\n Date: ",formattedToday);
-    if (stats.date != formattedToday) { // Less than 1 hour until midnight
+
+    if (dbDate != formattedToday) { // Less than 1 hour until midnight
       resetStatsIfNeeded(); // Check and reset stats
     }
   }, 60000); // Check every minute
@@ -244,6 +251,7 @@ function calculateRemainingTimeCST(){
 
 // Start the server
 app.listen(port, () => {
+  calculateRemainingTimeCST();
   console.log(`Server running on: ${port}/`);
   scheduleReset();
 });
