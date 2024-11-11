@@ -3,7 +3,9 @@
 
 public/sounds/
 node_modules
-cypress
+/cypress
 cypress.config.js
 .env
 script.js
+public/customquery.txt
+todos.txt
