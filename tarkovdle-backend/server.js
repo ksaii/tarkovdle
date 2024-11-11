@@ -30,14 +30,23 @@ const statsFilePath = path.join(__dirname, "../site-stats.json");
 const stats = JSON.parse(fs.readFileSync(statsFilePath, "utf-8"));
 
 // Load and read weapons data
-const weapons = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "../weapons.json"), "utf-8")
-);
 
-// Function to write data to a file
-function writeJsonData(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf-8");
+async function getWeaponsFromDB() {
+  const [rows] = await db.execute('SELECT * FROM weapons');
+  return rows;
+
 }
+
+//Array Of weapon objects from db
+let weapons = [];
+
+getWeaponsFromDB().then(fetchedWeapons => {
+  weapons = fetchedWeapons;
+  
+}).catch(console.error);
+
+
+
 
 // Daily weapon
 let dailyWeapon;
@@ -53,6 +62,7 @@ let hoursLeft, minutesLeft, secondsLeft, formattedToday;
 // Endpoint to get daily weapon attributes
 app.get("/api/daily-weapon", (req, res) => {
   // Start the schedule
+  console.log("Daily Weapon Var:",dailyWeapon.name);
   const holder = dailyWeapon.name.toUpperCase();
   console.log(`User has loaded the Daily weapon: ${holder}`);
   const { name, ...attributes } = dailyWeapon;
@@ -79,6 +89,7 @@ app.get("/api/validate-guess", (req, res) => {
   const userGuess = req.query.guess.toUpperCase();
   const dailyWeaponName = dailyWeapon.name.toUpperCase();
 
+  console.log("User guessed: ",userGuess);
   if (userGuess === dailyWeaponName) {
     const storedGuess = weapons.find(
       (weapon) => weapon.name.toUpperCase() === userGuess
@@ -142,6 +153,7 @@ async function resetStatsIfNeeded() {
   try {
     const [rows] = await db.execute('SELECT date FROM site_stats WHERE date = ?', [formattedToday]);
 
+    const [storedDailyWeapon] = await db.execute('SELECT daily_weapon FROM site_stats WHERE date = ?', [formattedToday])
     // Reset stats if the date has changed
     if (rows.length === 0) { // If stats for today do not exist
 
@@ -149,7 +161,7 @@ async function resetStatsIfNeeded() {
 
       await db.execute(
         'INSERT INTO site_stats (date, total_global_wins, last_reset_key, daily_weapon) VALUES (?, 0, 0, ?)',
-        [formattedToday, dailyWeapon.name]
+        [formattedToday, dailyWeapon.id]
       );
       console.log(`Setting stats for new date: ${formattedToday}`);
     } else {
@@ -159,10 +171,15 @@ async function resetStatsIfNeeded() {
         dailyWeapon = weapons[Math.floor(Math.random() * weapons.length)];
         await db.execute(
           'UPDATE site_stats SET total_global_wins = 0, last_reset_key = last_reset_key + 1, daily_weapon = ? WHERE date = ?',
-          [dailyWeapon.name, formattedToday]
+          [dailyWeapon.id, formattedToday]
         );
         console.log(`Resetting stats for new date: ${formattedToday}`);
       } else {
+
+
+        dailyWeapon = weapons[storedDailyWeapon[0].daily_weapon-1];
+
+        console.log("DailyWeapon: ",dailyWeapon.name);
         console.log("No Reset Needed for date: ", stats.date);
       }
     }
