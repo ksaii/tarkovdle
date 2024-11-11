@@ -9,3 +9,4 @@ cypress.config.js
 script.js
 public/customquery.txt
 todos.txt
+site-stats.json
