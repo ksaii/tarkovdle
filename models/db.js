@@ -3,7 +3,7 @@ const mysql = require('mysql2');
 require('dotenv').config(); // Load environment variables from .env file
 
 // Create a pool connection to your local MySQL database 
-const connection = mysql.createPool({
+/*const connection = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
@@ -14,9 +14,18 @@ const connection = mysql.createPool({
   
   if (process.env.NODE_ENV !== 'production') {
     console.log('Environment variables loaded');
+  }*/
+
+    const connection = mysql.createPool(process.env.JAWSDB_URL);
+    
+// Check the database connection
+connection.getConnection((err, conn) => {
+  if (err) {
+    console.error('Error connecting to the database:', err.message);
+  } else {
+    console.log('Successfully connected to the database');
+    conn.release(); // Release the connection back to the pool
   }
-
-
-//const connection = mysql.createPool(process.env.JAWSDB_URL);
+});
 
 module.exports = connection.promise();

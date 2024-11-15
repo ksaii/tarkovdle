@@ -18,12 +18,16 @@ exports.createStat = async (req, res) => {
 // Get stats
 exports.getStats = async (req, res) => {
   try {
+    console.log('Attempting to fetch site stats...');
     const [rows] = await db.execute('SELECT * FROM site_stats');
+    console.log('Fetched site stats:', rows);
     res.status(200).json(rows);
   } catch (error) {
+    console.error('Error fetching site stats:', error.message);
     res.status(500).json({ error: error.message });
   }
 };
+
 
 // Update
 exports.updateStat = async (req, res) => {
